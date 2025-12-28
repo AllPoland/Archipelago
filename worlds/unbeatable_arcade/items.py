@@ -113,13 +113,36 @@ def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
     progressive_diff_count = 5 - world.options.min_difficulty
     item_count += progressive_diff_count
 
+    # Starting songs are removed from the pool
+    item_count -= world.options.start_song_count
+
     return item_count
 
 
 def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
+    # Grant the player's starting songs
+    start_song_count = world.options.start_song_count
+    start_songs = []
+    for i in range(0, start_song_count):
+        new_song_name = world.random.choice(world.included_songs)["name"]
+        while new_song_name in start_songs:
+            # In case we roll the same song twice, just roll again
+            new_song_name = world.random.choice(world.included_songs)["name"]
+
+        song_item_name = f"Song: {new_song_name}"
+        start_songs.append(song_item_name)
+
+        new_song = world.create_item(song_item_name)
+        world.push_precollected(new_song)
+
+    
+
     itempool: list[Item] = []
     for song in world.included_songs:
         song_item_name = f"Song: {song["name"]}"
+        if song_item_name in start_songs:
+            continue
+
         itempool.append(world.create_item(song_item_name))
 
     for char in CHARACTER_NAMES:
@@ -135,18 +158,3 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
     # Trap items to be added later
 
     world.multiworld.itempool += itempool
-
-    # Grant the player's starting songs
-    start_song_count = world.options.start_song_count
-    start_songs = []
-    for i in range(0, start_song_count):
-        new_song_name = world.random.choice(world.included_songs)["name"]
-        while new_song_name in start_songs:
-            # In case we roll the same song twice, just roll again
-            new_song_name = world.random.choice(world.included_songs)["name"]
-
-        song_item_name = f"Song: {new_song_name}"
-        start_songs.append(song_item_name)
-
-        new_song = world.create_item(song_item_name)
-        world.push_precollected(new_song)
