@@ -6,8 +6,8 @@ from worlds.AutoWorld import World
 
 from . import items
 # Order here is important
-# Locations relies on data generated from importing items
-from . import locations
+# Locations and rules rely on data generated from importing items.py
+from . import locations, rules
 from . import options as unbeatable_arcade_options
 
 class UNBEATABLEArcadeWorld(World):
@@ -33,7 +33,7 @@ class UNBEATABLEArcadeWorld(World):
 
 
     def set_rules(self) -> None:
-        return
+        rules.set_all_rules(self)
     
 
     def create_items(self) -> None:

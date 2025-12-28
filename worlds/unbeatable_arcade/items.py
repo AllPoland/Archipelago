@@ -100,6 +100,20 @@ def create_item_with_classification(world: UNBEATABLEArcadeWorld, name: str) -> 
     return UNBEATABLEArcadeItem(name, classification, id, world.player)
 
 
+def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
+    item_count = len(songs.included_songs)
+    item_count += len(CHARACTER_NAMES)
+    
+    # Min difficulty ranges from 0 - 4. We just need enough progressive
+    # diffs to go from min difficulty to star
+    progressive_diff_count = 5 - world.options.min_difficulty
+    item_count += progressive_diff_count
+
+    # Starting songs are left out of the item pool
+    item_count -= world.options.start_song_count
+    return item_count
+
+
 def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
     songs.set_included_songs(world.options.use_breakout)
 

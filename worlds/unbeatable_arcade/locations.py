@@ -1,8 +1,8 @@
 from BaseClasses import Location, Region
 
 from . import songs
+from .items import get_item_count, MAX_ITEMS
 from .world import UNBEATABLEArcadeWorld
-from .items import CHARACTER_NAMES, MAX_ITEMS
 
 LOCATION_NAME_TO_ID = {}
 
@@ -10,7 +10,7 @@ class UNBEATABLEArcadeLocation(Location):
     game = "UNBEATABLE Arcade"
 
 
-def populate_location_ids():
+def populate_location_ids() -> None:
     # Generate a generic location ID entry for each item
     # We want to generate one for the maximum possible number of items
     LOCATION_NAME_TO_ID.clear()
@@ -19,7 +19,7 @@ def populate_location_ids():
         LOCATION_NAME_TO_ID[f"Rating Unlock {i}"] = i
 
 
-def add_location(world: UNBEATABLEArcadeWorld, region: Region, name: str, id: int):
+def add_location(world: UNBEATABLEArcadeWorld, region: Region, name: str, id: int) -> None:
     new_location = UNBEATABLEArcadeLocation(
         world.player, name, id, region
     )
@@ -35,16 +35,7 @@ def create_all_locations(world: UNBEATABLEArcadeWorld) -> None:
     songs.set_included_songs(world.options.use_breakout)
 
     # Count up how many items (and therefore checks) we need
-    item_count = len(songs.included_songs)
-    item_count += len(CHARACTER_NAMES)
-    
-    # Min difficulty ranges from 0 - 4. We just need enough progressive
-    # diffs to go from min difficulty to star
-    progressive_diff_count = 5 - world.options.min_difficulty
-    item_count += progressive_diff_count
-
-    # Starting songs are left out of the item pool
-    item_count -= world.options.start_song_count
+    item_count = get_item_count(world)
 
     # This is where challenge board checks will go later
 
