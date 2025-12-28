@@ -70,6 +70,13 @@ def pre_calc_items() -> None:
 
 pre_calc_items()
 
+ITEM_NAME_GROUPS = {
+    "songs": set(),
+    "characters": set(),
+    "progression": set(),
+    "traps": set()
+}
+
 
 class UNBEATABLEArcadeItem(Item):
     game = "UNBEATABLE Arcade"
@@ -153,27 +160,34 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
         new_char = world.create_item(char_item_name)
         world.push_precollected(new_char)
 
-    itempool: list[Item] = []
+    songs: list[Item] = []
     for song in world.included_songs:
         if song["name"] in start_song_names:
             continue
 
         song_item_name = f"{SONG_PREFIX}{song["name"]}"
-        itempool.append(world.create_item(song_item_name))
+        songs.append(world.create_item(song_item_name))
 
+    characters: list[Item] = []
     for char in CHARACTER_NAMES:
         if char in start_char_names:
             continue
 
         char_item_name = f"{CHAR_PREFIX}{char}"
-        itempool.append(world.create_item(char_item_name))
+        characters.append(world.create_item(char_item_name))
 
     # Min difficulty ranges from 0 - 4. We just need enough progressive
     # diffs to go from min difficulty to star
+    progression: list[Item] = []
     progressive_diff_count = 5 - world.options.min_difficulty
     for i in range(0, progressive_diff_count):
-        itempool.append(world.create_item(PROG_DIFF_NAME))
+        progression.append(world.create_item(PROG_DIFF_NAME))
 
     # Trap items to be added later
 
-    world.multiworld.itempool += itempool
+    # Create item groups
+    ITEM_NAME_GROUPS["songs"] = set(songs)
+    ITEM_NAME_GROUPS["characters"] = set(characters)
+    ITEM_NAME_GROUPS["progression"] = set(progression)
+
+    world.multiworld.itempool += songs + characters + progression
