@@ -50,18 +50,18 @@ def get_grade_bonus(acc: float, fc: bool, fail: bool) -> int:
         return 10
 
 
-def get_rating_from_play(level: int, acc: float, fc: bool, fail: bool) -> float:
+def get_rating_from_play(level: float, acc: float, fc: bool, fail: bool) -> float:
     accPower = get_acc_power(acc)
     gradeBonus = get_grade_bonus(acc, fc, fail)
 
-    rating = float(level) * (accPower + gradeBonus)
+    rating = level * (accPower + gradeBonus)
     return rating / rating_divisor
 
 
-def get_expected_acc(target_rating: float, level: int) -> float:
+def get_expected_acc(skill_rating: float, level: int) -> float:
     # The portion of rating that must come from song scores
     # 2 stars come from flat completion, the rest come from 25 top plays
-    required_rating_from_songs = float(rating_divisor) * (target_rating - 2) / 25
+    required_rating_from_songs = float(rating_divisor) * (skill_rating - 2) / 25
     required_score_rating = required_rating_from_songs / level
     
     # Check the grade ranges to determine which grade bonus we're working with
@@ -80,8 +80,8 @@ def get_expected_acc(target_rating: float, level: int) -> float:
     return pow(required_acc_rating, 1 / acc_pow) + 50
 
 
-def get_expected_acc_curve(target_rating: float, level: int, curve_cutoff: float, bias: float, allow_pfc: bool) -> float:
-    raw_acc = get_expected_acc(target_rating, level) / 100
+def get_expected_acc_curve(skill_rating: float, level: int, curve_cutoff: float, bias: float, allow_pfc: bool) -> float:
+    raw_acc = get_expected_acc(skill_rating, level) / 100
 
     # Apply a curve based on the maximum rating possible on the map
     # The curve starts linear until a certain point, then it turns to an exponential with a vertical asymptote

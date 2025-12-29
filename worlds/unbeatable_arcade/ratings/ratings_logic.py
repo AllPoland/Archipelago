@@ -1,23 +1,30 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 import bisect
 
 from BaseClasses import CollectionState
 
-from . import star_calculator
-from ..items import SONG_PREFIX
+from .custom_rating_calculator import get_custom_rating_from_play
+from .star_calculator import get_expected_acc_curve
+from ..items import SONG_PREFIX, get_diff_count
 from ..options import UNBEATABLEArcadeOptions
 from ..songs import difficulty_key_from_rank
 
+if TYPE_CHECKING:
+    from ..world import UNBEATABLEArcadeWorld
+
 rating_per_map = 2 / 25
 expected_fail_threshold = 55
+score_falloff_base = 0.965
 
 
 def get_songs_with_ratings(songs: list, options: UNBEATABLEArcadeOptions) -> dict[str, dict[int, float]]:
     rated_songs = {}
 
-    target_rating = float(options.target_rating) / 100
-    skill_rating = target_rating + (float(options.actual_rating_diff) / 100)
-
-    diff_count = 5 - options.min_difficulty
+    skill_rating = float(options.skill_rating) / 100
+    diff_count = get_diff_count(options)
 
     allow_pfc = options.allow_pfc
     acc_curve_cutoff = float(options.acc_curve_cutoff) / 100
@@ -28,7 +35,7 @@ def get_songs_with_ratings(songs: list, options: UNBEATABLEArcadeOptions) -> dic
         new_rating = {}
         # Populate the rating entries with only the difficulties we'll unlock in the AP
         # This makes it easy to index the expected ratings by Progressive Difficulty inventory count
-        for i in range(0, diff_count + 1):
+        for i in range(0, diff_count):
             diff_rank = options.min_difficulty + i
             diff_key = difficulty_key_from_rank(diff_rank)
 
@@ -38,10 +45,10 @@ def get_songs_with_ratings(songs: list, options: UNBEATABLEArcadeOptions) -> dic
                 new_rating[diff_rank] = -1
                 continue
 
-            expected_acc = star_calculator.get_expected_acc_curve(
+            expected_acc = get_expected_acc_curve(
                 skill_rating, diff_level, acc_curve_cutoff, acc_curve_bias, allow_pfc
             )
-            expected_rating = star_calculator.get_rating_from_play(
+            expected_rating = get_custom_rating_from_play(
                 diff_level, expected_acc, False, expected_acc < expected_fail_threshold
             )
             new_rating[diff_rank] = expected_rating
@@ -51,6 +58,26 @@ def get_songs_with_ratings(songs: list, options: UNBEATABLEArcadeOptions) -> dic
     return rated_songs
 
 
+def get_target_rating(world: UNBEATABLEArcadeWorld) -> float:
+    diff_count = get_diff_count(world.options)
+
+    target_rating = 0
+    score_idx = 0
+    for song in world.included_songs:
+        rated_song = world.rated_songs[f"{SONG_PREFIX}{song["name"]}"]
+        for i in range(0, diff_count):
+            rank = i + world.options.min_difficulty
+            key = difficulty_key_from_rank(rank)
+            if song[key] < 0:
+                continue
+
+            score_rating = rated_song[rank]
+            target_rating += pow(score_falloff_base, score_idx) * score_rating
+            score_idx += 1
+
+    return target_rating * world.options.completion_percent / 100
+
+
 def set_state_dirty(state: CollectionState, player: int) -> None:
     state.unbeatable_is_dirty[player] = True
 
@@ -58,21 +85,30 @@ def set_state_dirty(state: CollectionState, player: int) -> None:
 def get_max_rating(state: CollectionState, player: int) -> float:
     if not state.unbeatable_is_dirty[player]:
         return state.unbeatable_max_rating[player]
-    
+
     scores = state.unbeatable_sorted_scores[player]
 
     unlocked_difficulties = 0
-    score_rating = 0
+
+    # score_rating = 0
+
+    max_rating = 0
+    score_idx = 0
     for entry in reversed(scores):
         unlocked_difficulties += 1
-        score_rating += entry["rating"]
-        if unlocked_difficulties >= 25:
-            # Only the top 25 difficulties count
-            break
+        score_rating = entry["rating"]
 
-    progress_rating = min(unlocked_difficulties, 25) * rating_per_map
+        max_rating += pow(score_falloff_base, score_idx) * score_rating
+        score_idx += 1
 
-    max_rating = score_rating + progress_rating
+        # if unlocked_difficulties >= 25:
+        #     # Only the top 25 difficulties count
+        #     break
+
+    # progress_rating = min(unlocked_difficulties, 25) * rating_per_map
+
+    # max_rating = score_rating + progress_rating
+
     state.unbeatable_max_rating[player] = max_rating
     state.unbeatable_is_dirty[player] = False
 
@@ -81,7 +117,7 @@ def get_max_rating(state: CollectionState, player: int) -> float:
 
 def add_song(state: CollectionState, player: int, rated_songs: dict[str, dict[int, float]], song_name: str) -> None:
     # Insert all the difficulties added by the song
-    unlocked_rank = state.count(song_name, player)
+    unlocked_rank = state.count(song_name, player) - 1
 
     rated_song = rated_songs[song_name]
     rating = rated_song[unlocked_rank]
@@ -99,7 +135,7 @@ def add_song(state: CollectionState, player: int, rated_songs: dict[str, dict[in
 
 
 def remove_song(state: CollectionState, player: int, song_name: str) -> None:
-    removed_rank = state.count(song_name, player) + 1
+    removed_rank = state.count(song_name, player)
 
     to_remove = None
     for entry in state.unbeatable_sorted_scores[player]:

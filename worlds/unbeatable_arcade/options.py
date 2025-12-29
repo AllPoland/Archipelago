@@ -2,15 +2,15 @@ from dataclasses import dataclass
 
 from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle
 
-class TargetRating(Range):
+class SkillRating(Range):
     """
-    The STAR rating you need to achieve to complete the randomizer.
+    Your STAR rating.
     This is also used to calculate your expected performance for logic.
-    You should set this to just a bit lower than the STAR rating you have right now.
-    NOTE: these values are multiplied by 100, so if want a target rating of 5.63, set this to 563
+    You should set this to just a little bit lower than the STAR rating you have right now.
+    NOTE: these values are multiplied by 100, so if want to set a rating of 5.63, set this to 563
     """
 
-    display_name = "Target Rating"
+    display_name = "Star Rating"
 
     range_start = 300
     range_end = 1300
@@ -26,16 +26,36 @@ class UseBreakout(Toggle):
 
     display_name = "Include Breakout Songs"
 
-    default = False
+    default = True
+
+
+class MaxDifficulty(Choice):
+    """
+    Sets the highest difficulty to unlock.
+    Difficulties above this will be inaccessible during the randomizer.
+    You should set this to the highest difficulty you can consistently pass.
+    """
+
+    display_name = "Maximum Difficulty"
+
+    option_beginner = 0
+    option_normal = 1
+    option_hard = 2
+    option_expert = 3
+    option_unbeatable = 4
+    option_star = 5
+
+    default = option_star
 
 
 class MinDifficulty(Choice):
     """
     Sets the first unlocked difficulty. Lower difficulties than this will be inacessible.
     Higher difficulties must be unlocked by finding 'Progressive Difficulty' items.
-    The more difficulties there are between this and the hardest difficulty you can play,
+    The more difficulties there are between this and Maximum Difficulty,
     the longer the game will generally be.
-    (You use Star difficulty as the minimum because some songs don't have one)
+    NOTE: If this is higher than Maximum Difficulty, you will only ever unlock Minimum Difficulty.
+    (You also can't use Star difficulty as the minimum because some songs don't have one.)
     """
 
     display_name = "Minimum Difficulty"
@@ -47,6 +67,21 @@ class MinDifficulty(Choice):
     option_unbeatable = 4
 
     default = option_beginner
+
+
+class CompletionPercent(Range):
+    """
+    Sets how much of the game you need to play to complete the randomizer.
+    Lower values make logic more lenient but can lead to pacing issues.
+    If you want a shorter randomizer, consider increasing Minimum Difficulty first.
+    """
+
+    display_name = "Completion Percentage"
+
+    range_start = 1
+    range_end = 100
+
+    default = 85
 
 
 class StartSongCount(Range):
@@ -74,22 +109,6 @@ class StartCharacterCount(Range):
     range_end = 11
 
     default = 1
-
-
-class ActualRatingDiff(Range):
-    """
-    Represents the difference between your target STAR rating and your actual rating.
-    Higher values make the logic expect better scores from you, but this must be non-zero.
-    Ideally, you should set this to something around the actual difference between your target rating and actual rating.
-    NOTE: these values are multiplied by 100, so if want a difference of 0.26, set this to 26
-    """
-
-    display_name = "Actual Rating Difference"
-
-    range_start = 10
-    range_end = 300
-    
-    default = 50
 
 
 class AllowPfc(Toggle):
@@ -134,13 +153,14 @@ class AccCurveCutoff(Range):
 
 @dataclass
 class UNBEATABLEArcadeOptions(PerGameCommonOptions):
-    target_rating: TargetRating
     use_breakout: UseBreakout
+    max_difficulty: MaxDifficulty
     min_difficulty: MinDifficulty
+    completion_percent: CompletionPercent
     start_song_count: StartSongCount
     start_char_count: StartCharacterCount
 
-    actual_rating_diff: ActualRatingDiff
+    skill_rating: SkillRating
     allow_pfc: AllowPfc
     acc_curve_bias: AccCurveBias
     acc_curve_cutoff: AccCurveCutoff
@@ -149,11 +169,11 @@ class UNBEATABLEArcadeOptions(PerGameCommonOptions):
 option_groups = [
     OptionGroup(
         "Gameplay Options",
-        [TargetRating, UseBreakout, MinDifficulty, StartSongCount, StartCharacterCount]
+        [UseBreakout, MaxDifficulty, MinDifficulty, CompletionPercent, StartSongCount, StartCharacterCount]
     ),
     OptionGroup(
         "Difficulty Options",
-        [ActualRatingDiff, AllowPfc]
+        [SkillRating, AllowPfc]
     ),
     OptionGroup(
         "Advanced Options",

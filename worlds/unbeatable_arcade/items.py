@@ -6,6 +6,7 @@ from BaseClasses import Item, ItemClassification
 
 from . import songs
 from .game_info import GAME_NAME
+from .options import UNBEATABLEArcadeOptions
 from .songs import difficulty_key_from_rank
 
 if TYPE_CHECKING:
@@ -52,6 +53,13 @@ CHAR_PREFIX = "Character: "
 # IDs are generated based on the lists so that it's not a nightmare to maintain game updates
 ITEM_NAME_TO_ID = {}
 
+
+def get_diff_count(options: UNBEATABLEArcadeItem) -> int:
+    # Min difficulty ranges from 0 to 4, and max ranges from 0 to 5.
+    # We need enough progressive diffs to unlock min difficulty and get up to max
+    return (options.max_difficulty - options.min_difficulty) + 1
+
+
 def pre_calc_items() -> None:
     curr_id = 1
     for song in songs.all_songs:
@@ -86,8 +94,8 @@ class UNBEATABLEArcadeItem(Item):
 
 
 def get_max_items():
-    # There are a maximum of 5 progressive difficulties
-    count = len(songs.all_songs) * 5
+    # There are a maximum of 6 progressive items per song
+    count = len(songs.all_songs) * 6
     count += len(CHARACTER_NAMES)
 
     return count
@@ -117,15 +125,12 @@ def create_item_with_classification(world: UNBEATABLEArcadeWorld, name: str) -> 
 
 
 def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
-    # Min difficulty ranges from 0 - 4. We just need enough progressive
-    # diffs to go from min difficulty to star
-    progressive_diff_count = 5 - world.options.min_difficulty
+    diff_count = get_diff_count(world.options)
 
     item_count = 0
     for song in world.included_songs:
-        for i in range(0, progressive_diff_count):
-            # Damn you off by one error
-            diff_rank = i + world.options.min_difficulty + 1
+        for i in range(0, diff_count):
+            diff_rank = i + world.options.min_difficulty
             diff_key = difficulty_key_from_rank(diff_rank)
             if song[diff_key] < 0:
                 continue
@@ -134,7 +139,7 @@ def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
 
     item_count += len(CHARACTER_NAMES)
     
-    # item_count += progressive_diff_count
+    # item_count += diff_count
 
     # Starting items are removed from the pool
     item_count -= world.options.start_song_count
@@ -175,21 +180,18 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
 
     item_pool: list[Item] = []
 
-    # Min difficulty ranges from 0 to 4. We just need enough progressive
-    # diffs to go from min difficulty to star
-    progressive_diff_count = 5 - world.options.min_difficulty
+    diff_count = get_diff_count(world.options)
 
-    # for i in range(0, progressive_diff_count):
+    # for i in range(0, diff_count):
     #     item_pool.append(world.create_item(PROG_DIFF_NAME))
 
     for song in world.included_songs:
         song_item_name = f"{SONG_PREFIX}{song["name"]}"
-        for i in range(0, progressive_diff_count):
+        for i in range(0, diff_count):
             if i == 0 and song["name"] in start_song_names:
                 continue
 
-            # Damn you off by one error
-            diff_rank = i + world.options.min_difficulty + 1
+            diff_rank = i + world.options.min_difficulty
             diff_key = difficulty_key_from_rank(diff_rank)
             if song[diff_key] < 0:
                 continue
