@@ -98,6 +98,21 @@ all_songs.extend(base_songs)
 all_songs.extend(breakout_songs)
 
 
+def difficulty_key_from_rank(difficulty: int) -> str:
+    if difficulty <= 0:
+        return "b"
+    elif difficulty == 1:
+        return "n"
+    elif difficulty == 2:
+        return "h"
+    elif difficulty == 3:
+        return "e"
+    elif difficulty == 4:
+        return "u"
+    else:
+        return "s"
+
+
 def get_included_songs(breakout: bool) -> list:
     included_songs = []
     included_songs.extend(base_songs)

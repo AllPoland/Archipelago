@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import math
+
 from typing import TYPE_CHECKING
 
 from BaseClasses import CollectionState, MultiWorld
@@ -36,7 +38,7 @@ class RatingState(LogicMixin):
     
     def copy_mixin(self, new_state: CollectionState) -> CollectionState:
         new_state.unbeatable_sorted_scores = {
-            player: scores.copy() for player, scores in self.unbeatable_sorted_scores.items()
+            player: list(entry.copy() for entry in scores) for player, scores in self.unbeatable_sorted_scores.items()
         }
 
         new_state.unbeatable_max_rating = {
@@ -64,6 +66,5 @@ def set_all_rules(world: UNBEATABLEArcadeWorld) -> None:
             location,
             lambda state: get_max_rating(state, player) >= curr_rating
         )
-        curr_rating += rating_step
 
     world.multiworld.completion_condition[world.player] = lambda state: get_max_rating(state, player) >= target_rating

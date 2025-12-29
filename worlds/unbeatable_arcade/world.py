@@ -30,7 +30,7 @@ class UNBEATABLEArcadeWorld(World):
     origin_region_name = "Arcade"
 
     included_songs: list
-    rated_songs: dict[str, list[float]]
+    rated_songs: dict[str, dict[int, float]]
 
 
     def generate_early(self) -> None:
@@ -78,12 +78,10 @@ class UNBEATABLEArcadeWorld(World):
 
         if change:
             if item.name in self.item_name_groups["songs"]:
+                print(f"Added: {item.name}")
                 ratings_logic.add_song(state, self.player, self.rated_songs, item.name)
-                print(f"Added song, {ratings_logic.get_max_rating(state, self.player)}")
-                print(list(reversed(state.unbeatable_sorted_scores[self.player])))
-            elif item.name == items.PROG_DIFF_NAME:
-                ratings_logic.set_state_dirty(state, self.player)
-                print(f"Added progressive difficulty, {ratings_logic.get_max_rating(state, self.player)}")
+                print(ratings_logic.get_max_rating(state, self.player))
+                # print(list(reversed(state.unbeatable_sorted_scores[self.player])))
         
         return change
     
@@ -94,7 +92,5 @@ class UNBEATABLEArcadeWorld(World):
         if change:
             if item.name in self.item_name_groups["songs"]:
                 ratings_logic.remove_song(state, self.player, item.name)
-            elif item.name == items.PROG_DIFF_NAME:
-                ratings_logic.set_state_dirty(state, self.player)
         
         return change

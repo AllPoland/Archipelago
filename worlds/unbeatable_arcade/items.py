@@ -6,13 +6,14 @@ from BaseClasses import Item, ItemClassification
 
 from . import songs
 from .game_info import GAME_NAME
+from .songs import difficulty_key_from_rank
 
 if TYPE_CHECKING:
     from .world import UNBEATABLEArcadeWorld
 
 DEFAULT_CLASSIFICATIONS = {
-    "Song": ItemClassification.progression,
-    "Difficulty": ItemClassification.progression | ItemClassification.useful,
+    "Song": ItemClassification.progression_deprioritized_skip_balancing,
+    # "Difficulty": ItemClassification.progression,
     # Will no longer be filler once challenge board is included
     # because certain characters are needed for some challenges
     "Character": ItemClassification.filler,
@@ -41,11 +42,11 @@ TRAP_NAMES = [
     "Crawl Trap"
 ]
 
-PROG_DIFF_NAME = "Progressive Difficulty"
+# PROG_DIFF_NAME = "Progressive Difficulty"
 # This isn't a real item, but UNBEATABLE has no infinite filler items
 FILLER_NAME = "Worn Out Tape"
 
-SONG_PREFIX = "Song: "
+SONG_PREFIX = "Progressive Song: "
 CHAR_PREFIX = "Character: "
 
 # IDs are generated based on the lists so that it's not a nightmare to maintain game updates
@@ -65,8 +66,8 @@ def pre_calc_items() -> None:
         ITEM_NAME_TO_ID[trap] = curr_id
         curr_id += 1
 
-    ITEM_NAME_TO_ID[PROG_DIFF_NAME] = curr_id
-    curr_id += 1
+    # ITEM_NAME_TO_ID[PROG_DIFF_NAME] = curr_id
+    # curr_id += 1
     ITEM_NAME_TO_ID[FILLER_NAME] = curr_id
 
 pre_calc_items()
@@ -74,7 +75,7 @@ pre_calc_items()
 ITEM_NAME_GROUPS = {
     "songs": set(f"{SONG_PREFIX}{entry["name"]}" for entry in songs.all_songs),
     "characters": set(CHARACTER_NAMES),
-    "progression": {PROG_DIFF_NAME},
+    # "progression": {PROG_DIFF_NAME},
     "traps": set(TRAP_NAMES),
     "filler": {FILLER_NAME}
 }
@@ -85,11 +86,10 @@ class UNBEATABLEArcadeItem(Item):
 
 
 def get_max_items():
-    count = len(songs.all_songs)
+    # There are a maximum of 5 progressive difficulties
+    count = len(songs.all_songs) * 5
     count += len(CHARACTER_NAMES)
 
-    # There are a maximum of 5 progressive difficulties
-    count += 5
     return count
 
 
@@ -104,9 +104,9 @@ def create_item_with_classification(world: UNBEATABLEArcadeWorld, name: str) -> 
     if name in ITEM_NAME_TO_ID:
         item_id = ITEM_NAME_TO_ID[name]
 
-    if name == PROG_DIFF_NAME:
-        classification = DEFAULT_CLASSIFICATIONS["Difficulty"]
-    elif name in TRAP_NAMES:
+    # if name == PROG_DIFF_NAME:
+    #     classification = DEFAULT_CLASSIFICATIONS["Difficulty"]
+    if name in TRAP_NAMES:
         classification = DEFAULT_CLASSIFICATIONS["Trap"]
     elif name in CHARACTER_NAMES:
         classification = DEFAULT_CLASSIFICATIONS["Character"]
@@ -117,13 +117,24 @@ def create_item_with_classification(world: UNBEATABLEArcadeWorld, name: str) -> 
 
 
 def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
-    item_count = len(world.included_songs)
-    item_count += len(CHARACTER_NAMES)
-    
     # Min difficulty ranges from 0 - 4. We just need enough progressive
     # diffs to go from min difficulty to star
     progressive_diff_count = 5 - world.options.min_difficulty
-    item_count += progressive_diff_count
+
+    item_count = 0
+    for song in world.included_songs:
+        for i in range(0, progressive_diff_count):
+            # Damn you off by one error
+            diff_rank = i + world.options.min_difficulty + 1
+            diff_key = difficulty_key_from_rank(diff_rank)
+            if song[diff_key] < 0:
+                continue
+            
+            item_count += 1
+
+    item_count += len(CHARACTER_NAMES)
+    
+    # item_count += progressive_diff_count
 
     # Starting items are removed from the pool
     item_count -= world.options.start_song_count
@@ -163,12 +174,27 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
         world.push_precollected(new_char)
 
     item_pool: list[Item] = []
-    for song in world.included_songs:
-        if song["name"] in start_song_names:
-            continue
 
+    # Min difficulty ranges from 0 to 4. We just need enough progressive
+    # diffs to go from min difficulty to star
+    progressive_diff_count = 5 - world.options.min_difficulty
+
+    # for i in range(0, progressive_diff_count):
+    #     item_pool.append(world.create_item(PROG_DIFF_NAME))
+
+    for song in world.included_songs:
         song_item_name = f"{SONG_PREFIX}{song["name"]}"
-        item_pool.append(world.create_item(song_item_name))
+        for i in range(0, progressive_diff_count):
+            if i == 0 and song["name"] in start_song_names:
+                continue
+
+            # Damn you off by one error
+            diff_rank = i + world.options.min_difficulty + 1
+            diff_key = difficulty_key_from_rank(diff_rank)
+            if song[diff_key] < 0:
+                continue
+            
+            item_pool.append(world.create_item(song_item_name))
 
     for char in CHARACTER_NAMES:
         if char in start_char_names:
@@ -177,12 +203,9 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
         char_item_name = f"{CHAR_PREFIX}{char}"
         item_pool.append(world.create_item(char_item_name))
 
-    # Min difficulty ranges from 0 to 4. We just need enough progressive
-    # diffs to go from min difficulty to star
-    progressive_diff_count = 5 - world.options.min_difficulty
-    for i in range(0, progressive_diff_count):
-        item_pool.append(world.create_item(PROG_DIFF_NAME))
-
     # Trap items to be added later
+
+    # Forcing a progressive difficulty helps with the restrictive start inherent to this AP
+    # world.multiworld.local_early_items[world.player][PROG_DIFF_NAME] = 1
 
     world.multiworld.itempool += item_pool
