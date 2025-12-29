@@ -40,7 +40,7 @@ class UNBEATABLEArcadeWorld(World):
         # Precalculate the expected rating gains per-map
         # This is stored as a dictionary indexed by song item names,
         # then a list of ratings indexed by Progressive Difficulty count
-        self.rated_songs = ratings_logic.get_songs_with_ratings(self.included_songs, self.options)
+        self.rated_songs = ratings_logic.get_songs_with_ratings(songs.all_songs, self.options)
 
 
     def create_regions(self) -> None:
