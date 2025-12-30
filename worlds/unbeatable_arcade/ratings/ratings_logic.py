@@ -105,7 +105,20 @@ def add_song(state: CollectionState, player: int, rated_songs: dict[str, dict[in
     unlocked_rank = state.count(song_name, player) - 1
 
     rated_song = rated_songs[song_name]
-    rating = rated_song[unlocked_rank]
+
+    rating = 0
+    found_count = 0
+    for rank in rated_song.keys():
+        if rated_song[rank] < 0:
+            # This difficulty doesn't exist
+            continue
+
+        if found_count >= unlocked_rank:
+            # This is the rank we just unlocked
+            rating = rated_song[rank]
+            break
+
+        found_count += 1
 
     # Add this difficulty to our unlocked scores, in ascending order
     # This format makes it easiest to calculate our max rating

@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle
 
+
 class SkillRating(Range):
     """
     Your STAR rating.
@@ -16,17 +17,6 @@ class SkillRating(Range):
     range_end = 1300
 
     default = 600
-
-
-class UseBreakout(Toggle):
-    """
-    Enables songs included in UNBEATABLE - Breakout Edition.
-    This requires that you own the UNBEATABLE - Breakout Edition Upgrade DLC and have it installed.
-    """
-
-    display_name = "Include Breakout Songs"
-
-    default = False
 
 
 class MaxDifficulty(Choice):
@@ -82,6 +72,17 @@ class CompletionPercent(Range):
     range_end = 100
 
     default = 85
+
+
+class UseBreakout(Toggle):
+    """
+    Enables songs included in UNBEATABLE - Breakout Edition.
+    This requires that you own the UNBEATABLE - Breakout Edition Upgrade DLC and have it installed.
+    """
+
+    display_name = "Include Breakout Songs"
+
+    default = False
 
 
 class StartSongCount(Range):
@@ -169,7 +170,7 @@ class UNBEATABLEArcadeOptions(PerGameCommonOptions):
 option_groups = [
     OptionGroup(
         "Gameplay Options",
-        [UseBreakout, MaxDifficulty, MinDifficulty, CompletionPercent, StartSongCount, StartCharacterCount]
+        [MaxDifficulty, MinDifficulty, CompletionPercent, StartSongCount, StartCharacterCount, UseBreakout]
     ),
     OptionGroup(
         "Difficulty Options",
