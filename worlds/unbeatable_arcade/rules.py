@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import math
-
 from typing import TYPE_CHECKING
 
 from BaseClasses import CollectionState, MultiWorld
@@ -52,7 +50,6 @@ class RatingState(LogicMixin):
 
 def set_all_rules(world: UNBEATABLEArcadeWorld) -> None:
     target_rating = get_target_rating(world)
-    print(f"Target rating: {target_rating}")
 
     item_count = get_item_count(world)
     player = world.player
@@ -62,10 +59,10 @@ def set_all_rules(world: UNBEATABLEArcadeWorld) -> None:
 
     for i in range(0, item_count):
         location = world.get_location(f"{RATE_LOC_PREFIX}{i + 1}")
-        print(f"{RATE_LOC_PREFIX}{i + 1}: {curr_rating}")
+        # print(f"{RATE_LOC_PREFIX}{i + 1}: {curr_rating}")
         set_rule(
             location,
-            lambda state: get_max_rating(state, player) >= curr_rating
+            lambda state, loc_rating = curr_rating: get_max_rating(state, player) >= loc_rating
         )
 
         curr_rating += rating_step

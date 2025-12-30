@@ -26,7 +26,7 @@ class UseBreakout(Toggle):
 
     display_name = "Include Breakout Songs"
 
-    default = True
+    default = False
 
 
 class MaxDifficulty(Choice):

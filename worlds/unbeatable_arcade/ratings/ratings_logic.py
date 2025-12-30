@@ -6,7 +6,7 @@ import bisect
 
 from BaseClasses import CollectionState
 
-from .custom_rating_calculator import get_custom_rating_from_play
+from . import custom_rating_calculator
 from .star_calculator import get_expected_acc_curve
 from ..items import SONG_PREFIX, get_diff_count
 from ..options import UNBEATABLEArcadeOptions
@@ -15,9 +15,7 @@ from ..songs import difficulty_key_from_rank
 if TYPE_CHECKING:
     from ..world import UNBEATABLEArcadeWorld
 
-rating_per_map = 2 / 25
 expected_fail_threshold = 55
-score_falloff_base = 0.965
 
 
 def get_songs_with_ratings(songs: list, options: UNBEATABLEArcadeOptions) -> dict[str, dict[int, float]]:
@@ -48,7 +46,7 @@ def get_songs_with_ratings(songs: list, options: UNBEATABLEArcadeOptions) -> dic
             expected_acc = get_expected_acc_curve(
                 skill_rating, diff_level, acc_curve_cutoff, acc_curve_bias, allow_pfc
             )
-            expected_rating = get_custom_rating_from_play(
+            expected_rating = custom_rating_calculator.get_custom_rating_from_play(
                 diff_level, expected_acc, False, expected_acc < expected_fail_threshold
             )
             new_rating[diff_rank] = expected_rating
@@ -72,7 +70,7 @@ def get_target_rating(world: UNBEATABLEArcadeWorld) -> float:
                 continue
 
             score_rating = rated_song[rank]
-            target_rating += pow(score_falloff_base, score_idx) * score_rating
+            target_rating += custom_rating_calculator.get_score_contribution(score_rating, score_idx)
             score_idx += 1
 
     return target_rating * world.options.completion_percent / 100
@@ -88,26 +86,13 @@ def get_max_rating(state: CollectionState, player: int) -> float:
 
     scores = state.unbeatable_sorted_scores[player]
 
-    unlocked_difficulties = 0
-
-    # score_rating = 0
-
     max_rating = 0
     score_idx = 0
     for entry in reversed(scores):
-        unlocked_difficulties += 1
         score_rating = entry["rating"]
 
-        max_rating += pow(score_falloff_base, score_idx) * score_rating
+        max_rating += custom_rating_calculator.get_score_contribution(score_rating, score_idx)
         score_idx += 1
-
-        # if unlocked_difficulties >= 25:
-        #     # Only the top 25 difficulties count
-        #     break
-
-    # progress_rating = min(unlocked_difficulties, 25) * rating_per_map
-
-    # max_rating = score_rating + progress_rating
 
     state.unbeatable_max_rating[player] = max_rating
     state.unbeatable_is_dirty[player] = False

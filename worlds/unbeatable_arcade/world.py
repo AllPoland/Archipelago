@@ -79,10 +79,11 @@ class UNBEATABLEArcadeWorld(World):
 
         if change:
             if item.name in self.item_name_groups["songs"]:
-                print(f"Added: {item.name}")
+                # start_rating = ratings_logic.get_max_rating(state, self.player)
+                # print(f"Added: {item.name}")
                 ratings_logic.add_song(state, self.player, self.rated_songs, item.name)
-                print(f"New max rating: {ratings_logic.get_max_rating(state, self.player)}")
-                # print(list(reversed(state.unbeatable_sorted_scores[self.player])))
+                # end_rating = ratings_logic.get_max_rating(state, self.player)
+                # print(f"New max rating: {end_rating} ({end_rating - start_rating})")
         
         return change
     
