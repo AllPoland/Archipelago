@@ -118,28 +118,28 @@ class AllowPfc(Toggle):
 
     display_name = "Allow PFC"
 
-    default = False
+    default = True
 
 
 class AccCurveBias(Range):
     """
     Adjusts the slope of the expected accuracy curve.
-    Higher values lead to higher expected accuracy on high-difficulty maps.
+    Higher values lead to higher expected accuracy on low-difficulty maps.
     It's probably best to leave this unchanged.
     """
 
     display_name = "Accuracy Curve Bias"
 
-    range_start = 100
+    range_start = 0
     range_end = 1000
 
-    default = 540
+    default = 250
 
 
 class AccCurveCutoff(Range):
     """
     Sets when the expected accuracy value starts tapering off.
-    Low values lead to higher expected accuracy on low-difficulty maps.
+    Low values tend to lead to higher expected accuracy on high-difficulty maps.
     It's probably best to leave this unchanged.
     """
 

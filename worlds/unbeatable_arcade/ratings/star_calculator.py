@@ -83,11 +83,14 @@ def get_expected_acc(skill_rating: float, level: int) -> float:
 def get_expected_acc_curve(skill_rating: float, level: int, curve_cutoff: float, bias: float, allow_pfc: bool) -> float:
     raw_acc = get_expected_acc(skill_rating, level) / 100
 
+    if raw_acc < curve_cutoff:
+        return raw_acc * 100
+
     # Apply a curve based on the maximum rating possible on the map
     # The curve starts linear until a certain point, then it turns to an exponential with a vertical asymptote
     # This avoids expecting the player to get over 100%, which isn't possible
     # and adds some leniency so the player doesn't get skill stuck as much
-    max_acc = 1 if allow_pfc else 0.99
+    max_acc = 1 if allow_pfc else 0.98
     acc_epsilon = 1 - max_acc
 
     curve_range = 1 - curve_cutoff - acc_epsilon
