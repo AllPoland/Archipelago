@@ -43,7 +43,7 @@ base_songs = [
     {"name":"low (nsr ending theme)", "b":5, "n":9, "h":11, "e":14, "u":17, "s":-1},
     {"name":"memorized", "b":3, "n":7, "h":10, "e":12, "u":15, "s":-1},
     {"name":"mirror", "b":2, "n":8, "h":9, "e":11, "u":16, "s":16},
-    {"name":"mirror - kamone sano remix", "b":4, "n":9, "h":11, "e":13, "u":21, "s":-1},
+    {"name":"mirror - kamome sano remix", "b":4, "n":9, "h":11, "e":13, "u":21, "s":-1},
     {"name":"motherbound", "b":6, "n":9, "h":11, "e":15, "u":20, "s":22},
     {"name":"neo elsewhere", "b":4, "n":7, "h":9, "e":12, "u":16, "s":-1},
     {"name":"no signal", "b":3, "n":7, "h":9, "e":12, "u":16, "s":-1},
