@@ -97,5 +97,5 @@ def get_expected_acc_curve(skill_rating: float, level: int, curve_cutoff: float,
 
     # range + cutoff - range * e^( -bias(acc01 - cutoff) )
     exponent = -bias * (raw_acc - curve_cutoff)
-    curved_acc = curve_range + curve_cutoff - (curve_range * math.exp(exponent))
+    curved_acc = max_acc - (curve_range * math.exp(exponent))
     return curved_acc * 100

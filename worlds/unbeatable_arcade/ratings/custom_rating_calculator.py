@@ -1,6 +1,6 @@
 from .star_calculator import get_rating_from_play
 
-diff_pow = 2
+diff_pow = 1.2
 score_falloff_base = 0.965
 
 

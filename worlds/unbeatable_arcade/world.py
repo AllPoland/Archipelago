@@ -31,6 +31,7 @@ class UNBEATABLEArcadeWorld(World):
 
     included_songs: list
     rated_songs: dict[str, dict[int, float]]
+    target_rating: float
 
 
     def generate_early(self) -> None:
@@ -45,8 +46,9 @@ class UNBEATABLEArcadeWorld(World):
 
         # Precalculate the expected rating gains per-map
         # This is stored as a dictionary indexed by song item names,
-        # then a list of ratings indexed by Progressive Difficulty count
+        # then a list of ratings indexed by difficulty rank
         self.rated_songs = ratings_logic.get_songs_with_ratings(songs.all_songs, self.options)
+        self.target_rating = ratings_logic.get_target_rating(self)
 
 
     def create_regions(self) -> None:
@@ -84,7 +86,7 @@ class UNBEATABLEArcadeWorld(World):
         )
 
         slot_data["item_count"] = items.get_item_count(self)
-        slot_data["target_rating"] = ratings_logic.get_target_rating(self)
+        slot_data["target_rating"] = self.target_rating
 
         return slot_data
     
@@ -92,13 +94,12 @@ class UNBEATABLEArcadeWorld(World):
     def collect(self, state: CollectionState, item: Item) -> bool:
         change = super().collect(state, item)
 
-        if change:
-            if item.name in self.item_name_groups["songs"]:
-                # start_rating = ratings_logic.get_max_rating(state, self.player)
-                # print(f"Added: {item.name}")
-                ratings_logic.add_song(state, self.player, self.rated_songs, item.name)
-                # end_rating = ratings_logic.get_max_rating(state, self.player)
-                # print(f"New max rating: {end_rating} ({end_rating - start_rating})")
+        if change and item.name in self.item_name_groups["songs"]:
+            # start_rating = ratings_logic.get_max_rating(state, self.player)
+            # print(f"Added: {item.name}")
+            ratings_logic.add_song(state, self.player, self.rated_songs, item.name)
+            # end_rating = ratings_logic.get_max_rating(state, self.player)
+            # print(f"New max rating: {end_rating} ({end_rating - start_rating})")
         
         return change
     
@@ -106,8 +107,7 @@ class UNBEATABLEArcadeWorld(World):
     def remove(self, state: CollectionState, item: Item) -> bool:
         change = super().remove(state, item)
 
-        if change:
-            if item.name in self.item_name_groups["songs"]:
-                ratings_logic.remove_song(state, self.player, item.name)
+        if change and item.name in self.item_name_groups["songs"]:
+            ratings_logic.remove_song(state, self.player, item.name)
         
         return change

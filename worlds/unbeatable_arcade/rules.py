@@ -9,7 +9,7 @@ from worlds.generic.Rules import set_rule
 from .game_info import GAME_NAME
 from .items import get_item_count
 from .locations import RATE_LOC_PREFIX
-from .ratings.ratings_logic import get_target_rating, get_max_rating
+from .ratings.ratings_logic import get_max_rating
 
 if TYPE_CHECKING:
     from .world import UNBEATABLEArcadeWorld
@@ -49,7 +49,7 @@ class RatingState(LogicMixin):
 
 
 def set_all_rules(world: UNBEATABLEArcadeWorld) -> None:
-    target_rating = get_target_rating(world)
+    target_rating = world.target_rating
 
     item_count = get_item_count(world)
     player = world.player

@@ -13,10 +13,10 @@ class SkillRating(Range):
 
     display_name = "Star Rating"
 
-    range_start = 300
+    range_start = 250
     range_end = 1300
 
-    default = 600
+    default = 500
 
 
 class MaxDifficulty(Choice):
@@ -70,7 +70,7 @@ class CompletionPercent(Range):
     range_start = 1
     range_end = 100
 
-    default = 90
+    default = 80
 
 
 class UseBreakout(Toggle):
@@ -133,13 +133,13 @@ class AccCurveBias(Range):
     range_start = 0
     range_end = 1000
 
-    default = 250
+    default = 200
 
 
 class AccCurveCutoff(Range):
     """
     Sets when the expected accuracy value starts tapering off.
-    Low values tend to lead to higher expected accuracy on high-difficulty maps.
+    Low values tend to lead to lower expected accuracy on high-difficulty maps.
     It's probably best to leave this unchanged.
     """
 
@@ -148,7 +148,7 @@ class AccCurveCutoff(Range):
     range_start = 0
     range_end = 100
 
-    default = 80
+    default = 60
 
 
 @dataclass

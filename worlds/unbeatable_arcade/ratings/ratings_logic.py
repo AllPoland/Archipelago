@@ -59,8 +59,7 @@ def get_songs_with_ratings(songs: list, options: UNBEATABLEArcadeOptions) -> dic
 def get_target_rating(world: UNBEATABLEArcadeWorld) -> float:
     diff_count = get_diff_count(world.options)
 
-    target_rating = 0
-    score_idx = 0
+    sorted_scores = [];
     for song in world.included_songs:
         rated_song = world.rated_songs[f"{SONG_PREFIX}{song["name"]}"]
         for i in range(0, diff_count):
@@ -70,8 +69,13 @@ def get_target_rating(world: UNBEATABLEArcadeWorld) -> float:
                 continue
 
             score_rating = rated_song[rank]
-            target_rating += custom_rating_calculator.get_score_contribution(score_rating, score_idx)
-            score_idx += 1
+            bisect.insort(sorted_scores, score_rating)
+
+    target_rating = 0
+    score_idx = 0
+    for rating in reversed(sorted_scores):
+        target_rating += custom_rating_calculator.get_score_contribution(rating, score_idx)
+        score_idx += 1
 
     return target_rating * world.options.completion_percent / 100
 
