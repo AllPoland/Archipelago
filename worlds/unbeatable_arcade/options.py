@@ -68,7 +68,7 @@ class CompletionPercent(Range):
     display_name = "Completion Percentage"
 
     range_start = 1
-    range_end = 100
+    range_end = 95
 
     default = 90
 
