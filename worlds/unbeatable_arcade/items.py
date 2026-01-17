@@ -41,8 +41,7 @@ TRAP_NAMES = [
     "Stealth Trap",
     "Rainbow Trap",
     "Zoom Trap",
-    "Crawl Trap",
-    "Critical Trap"
+    "Crawl Trap"
 ]
 
 # This isn't a real item, but UNBEATABLE has no infinite filler items
@@ -117,6 +116,9 @@ def add_traps_non_local(world: UNBEATABLEArcadeWorld) -> None:
 
 
 def get_random_filler_item_name(world: UNBEATABLEArcadeWorld) -> str:
+    if world.options.use_traps:
+        return world.random.choice(TRAP_NAMES)
+
     return FILLER_NAME
 
 
