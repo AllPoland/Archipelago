@@ -110,6 +110,12 @@ def get_max_items():
     return count
 
 
+def add_traps_non_local(world: UNBEATABLEArcadeWorld) -> None:
+    non_local_items = world.options.non_local_items.value
+    for trap_name in TRAP_NAMES:
+        non_local_items.add(trap_name)
+
+
 def get_random_filler_item_name(world: UNBEATABLEArcadeWorld) -> str:
     return FILLER_NAME
 
