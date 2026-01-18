@@ -197,7 +197,7 @@ class NonLocalTraps(Toggle):
     Enabling this is the same as adding all the trap item names to the Non-local Items setting.
     """
 
-    display_name = "Non-Local Traps"
+    display_name = "Non-local Traps"
 
     default = False
 
