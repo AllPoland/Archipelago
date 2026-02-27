@@ -1,6 +1,7 @@
 # Dictionaries containing relevant info for each song in the game
 # Each entry includes the name and the ratings for each difficulty (beginner, normal, hard, expert, unbeatable, star)
 # Missing difficulties have a rating of -1
+from worlds.unbeatable_arcade.options import UNBEATABLEArcadeOptions
 
 # All songs included with the base game
 base_songs = [
@@ -124,12 +125,24 @@ def difficulty_key_from_rank(difficulty: int) -> str:
         return "s"
 
 
-def get_included_songs(breakout: bool) -> list:
+def get_included_songs(options: UNBEATABLEArcadeOptions) -> list:
     included_songs = []
     included_songs.extend(base_songs)
 
-    if breakout:
+    # Apply DLC
+    if options.use_breakout:
         # Include the breakout edition songs if the user has the DLC
         included_songs.extend(breakout_songs)
+
+    # Apply blacklist
+    song_prefix = "Progressive Song: "
+    for item_name in options.song_blacklist.value:
+        if not item_name.startswith(song_prefix):
+            continue
+
+        # Find the first index of the song name in the list and remove it
+        song_name = item_name.removeprefix(song_prefix)
+        remove_idx = next(i for i,s in enumerate(included_songs) if s["name"] == song_name)
+        included_songs.pop(remove_idx)
 
     return included_songs

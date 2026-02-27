@@ -50,7 +50,10 @@ class UNBEATABLEArcadeWorld(World):
             # items.add_traps_non_local(self)
 
         # Since this is the first stage of generation, add our included songs here
-        self.included_songs = songs.get_included_songs(self.options.use_breakout)
+        self.included_songs = songs.get_included_songs(self.options)
+        if len(self.included_songs) == 0:
+            raise(OptionError(f"{self.game} - {self.player_name} | All songs have been blacklisted!"))
+
         self.item_count = items.get_item_count(self)
 
         # Precalculate the expected rating gains per-map

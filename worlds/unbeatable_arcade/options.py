@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, Visibility
+from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, Visibility, ItemSet
 from .misc.float_range_text import FloatRangeText
 
 
@@ -124,6 +124,16 @@ class StartCharacterCount(Range):
     range_end = 11
 
     default = 1
+
+
+class SongBlacklist(ItemSet):
+    """
+    A list of songs to *not* include in the randomizer.
+    Any valid song item names added here will not be randomized and will not appear in-game.
+    For example, add \"Progressive Song: bookend song\" to avoid playing the 12-minute banger.
+    """
+
+    display_name = "Song Blacklist"
 
 
 class AllowPfc(Toggle):
@@ -294,6 +304,7 @@ class UNBEATABLEArcadeOptions(PerGameCommonOptions):
     completion_percent: CompletionPercent
     start_song_count: StartSongCount
     start_char_count: StartCharacterCount
+    song_blacklist: SongBlacklist
 
     use_traps: UseTraps
     # non_local_traps: NonLocalTraps
@@ -316,7 +327,7 @@ option_groups = [
     ),
     OptionGroup(
         "Generation Options",
-        [CompletionPercent, StartSongCount, StartCharacterCount, UseBreakout]
+        [CompletionPercent, StartSongCount, StartCharacterCount, UseBreakout, SongBlacklist]
     ),
     OptionGroup(
         "Trap Options",
