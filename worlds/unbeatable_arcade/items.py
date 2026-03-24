@@ -19,6 +19,7 @@ DEFAULT_CLASSIFICATIONS = {
     # Will no longer be filler once challenge board is included
     # because certain characters are needed for some challenges
     "Character": ItemClassification.filler,
+    "Scene": ItemClassification.filler,
     "Trap": ItemClassification.trap
 }
 
@@ -36,6 +37,29 @@ CHARACTER_NAMES = [
     "Rest"
 ]
 
+SCENE_NAMES = [
+    "train_station.",
+    "stadium_(past).",
+    "stadium_(present).",
+    "dreamscape.",
+    "prison_yard.",
+    "train.",
+    "lighthouse_show.",
+    "city_hideout.",
+    "recording_studio.",
+    "overpass.",
+    "city_center.",
+    "underground_show.",
+    "alleyway_show.",
+    "warehouse_show.",
+    "harm_hq_lobby.",
+    "zero_moment_array.",
+    "zm_test_chamber.",
+    "graveyard.",
+    "nsr.",
+    "greenscreen."
+]
+
 TRAP_NAMES = [
     "Silence Trap",
     "Stealth Trap",
@@ -49,6 +73,7 @@ FILLER_NAME = "Worn Out Tape"
 
 SONG_PREFIX = "Progressive Song: "
 CHAR_PREFIX = "Character: "
+SCENE_PREFIX = "Scene: "
 
 # Generate IDs based on the lists so that it's not a nightmare to maintain game updates
 ITEM_NAME_TO_ID = {}
@@ -62,6 +87,10 @@ for char in CHARACTER_NAMES:
     ITEM_NAME_TO_ID[f"{CHAR_PREFIX}{char}"] = curr_id
     curr_id += 1
 
+for scene in SCENE_NAMES:
+    ITEM_NAME_TO_ID[f"{SCENE_PREFIX}{scene}"] = curr_id
+    curr_id += 1
+
 for trap in TRAP_NAMES:
     ITEM_NAME_TO_ID[trap] = curr_id
     curr_id += 1
@@ -71,6 +100,7 @@ ITEM_NAME_TO_ID[FILLER_NAME] = curr_id
 ITEM_NAME_GROUPS = {
     "songs": set(f"{SONG_PREFIX}{entry["name"]}" for entry in songs.all_songs),
     "characters": set(f"{CHAR_PREFIX}{char}" for char in CHARACTER_NAMES),
+    "scenes": set(f"{SCENE_PREFIX}{scene}" for scene in SCENE_NAMES),
     "traps": set(TRAP_NAMES),
     "filler": {FILLER_NAME}
 }
@@ -100,6 +130,7 @@ def get_max_items():
     # There are a maximum of 6 progressive items per song
     count = len(songs.all_songs) * 6
     count += len(CHARACTER_NAMES)
+    count += len(SCENE_NAMES)
 
     good_item_count = count
     for i in range(0, len(TRAP_NAMES)):
@@ -133,6 +164,8 @@ def create_item_with_classification(world: UNBEATABLEArcadeWorld, name: str) -> 
         classification = DEFAULT_CLASSIFICATIONS["Trap"]
     elif name in CHARACTER_NAMES:
         classification = DEFAULT_CLASSIFICATIONS["Character"]
+    elif name in SCENE_NAMES:
+        classification = DEFAULT_CLASSIFICATIONS["Scene"]
     elif any(f"{SONG_PREFIX}{song["name"]}" == name for song in songs.all_songs):
         classification = DEFAULT_CLASSIFICATIONS["Song"]
 
@@ -153,10 +186,12 @@ def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
             item_count += 1
 
     item_count += len(CHARACTER_NAMES)
+    item_count += len(SCENE_NAMES)
 
     # Starting items are removed from the pool
     item_count -= world.options.start_song_count
     item_count -= world.options.start_char_count
+    item_count -= world.options.start_scene_count
 
     if world.options.use_traps:
         good_item_count = item_count
@@ -203,6 +238,19 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
         new_char = world.create_item(char_item_name)
         world.push_precollected(new_char)
 
+    start_scene_count = world.options.start_scene_count
+    start_scene_names = []
+    for i in range(0, start_scene_count):
+        new_scene_name = world.random.choice(SCENE_NAMES)
+        while new_scene_name in start_scene_names:
+            new_scene_name = world.random.choice(SCENE_NAMES)
+        
+        start_scene_names.append(new_scene_name)
+
+        scene_item_name = f"{SCENE_PREFIX}{new_scene_name}"
+        new_scene = world.create_item(scene_item_name)
+        world.push_precollected(new_scene)
+
     item_pool: list[Item] = []
 
     diff_count = get_diff_count(world.options)
@@ -227,6 +275,13 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
 
         char_item_name = f"{CHAR_PREFIX}{char}"
         item_pool.append(world.create_item(char_item_name))
+
+    for scene in SCENE_NAMES:
+        if scene in start_scene_names:
+            continue
+
+        scene_item_name = f"{SCENE_PREFIX}{scene}"
+        item_pool.append(world.create_item(scene_item_name))
 
     if world.options.use_traps:
         item_count = len(item_pool)
