@@ -125,6 +125,17 @@ class StartCharacterCount(Range):
 
     default = 1
 
+class StartStageCount(Range):
+    """
+    Sets how many stages (song backgrounds) to start with.
+    """
+
+    display_name = "Starting Stages"
+
+    range_start = 1
+    range_end = 20
+
+    default = 2
 
 class SongBlacklist(ItemSet):
     """
@@ -304,6 +315,7 @@ class UNBEATABLEArcadeOptions(PerGameCommonOptions):
     completion_percent: CompletionPercent
     start_song_count: StartSongCount
     start_char_count: StartCharacterCount
+    start_stage_count: StartStageCount
     song_blacklist: SongBlacklist
 
     use_traps: UseTraps
@@ -327,7 +339,7 @@ option_groups = [
     ),
     OptionGroup(
         "Generation Options",
-        [CompletionPercent, StartSongCount, StartCharacterCount, UseBreakout, SongBlacklist]
+        [CompletionPercent, StartSongCount, StartCharacterCount, StartStageCount, UseBreakout, SongBlacklist]
     ),
     OptionGroup(
         "Trap Options",
