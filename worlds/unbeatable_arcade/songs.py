@@ -77,13 +77,14 @@ base_songs = [
     {"name":"yeah yeah yeah yeah yeah yeah yeah yeah", "b":2, "n":7, "h":10, "e":13, "u":18, "s":20},
     {"name":"yeah yeah yeah yeah yeah yeah yeah yeah [trailer edit]", "b":2, "n":7, "h":11, "e":13, "u":20, "s":-1},
     {"name":"zero moment", "b":4, "n":8, "h":11, "e":15, "u":22, "s":25},
-    {"name":"swing", "b":-1, "n":-1, "h":-1,"e":-1,"u":-1,"s":24},
-    {"name":"forgetter", "b":1, "n":4, "h":7,"e":9,"u":13,"s":-1},
-    {"name":"cool_final2-actualfinal", "b":5, "n":8, "h":10,"e":14,"u":19,"s":-1},
-    {"name":"it's whacktime!", "b":3, "n":6, "h":9,"e":12,"u":18,"s":-1},
-    {"name":"malapropism", "b":2, "n":6, "h":9,"e":12,"u":14,"s":-1},
-    {"name":"low pitch", "b":2, "n":8, "h":10,"e":13,"u":17,"s":-1},
-    {"name":"mic check", "b":3, "n":7, "h":10,"e":13,"u":18,"s":-1}
+    {"name":"swing", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":24},
+    {"name":"forgetter", "b":1, "n":4, "h":7, "e":9, "u":13," s":-1},
+    {"name":"cool_final2-actualfinal", "b":5, "n":8, "h":10, "e":14, "u":19, "s":-1},
+    {"name":"it's whacktime!", "b":3, "n":6, "h":9, "e":12, "u":18, "s":-1},
+    {"name":"malapropism", "b":2, "n":6, "h":9, "e":12, "u":14, "s":-1},
+    {"name":"low pitch", "b":2, "n":8, "h":10, "e":13, "u":17, "s":-1},
+    {"name":"mic check", "b":3, "n":7, "h":10, "e":13, "u":18, "s":-1},
+    {"name":"do no harm (atrial mix)", "b":3, "n":8, "h":11, "e":13, "u":16, "s":-1}
 ]
 
 # All songs included with the breakout edition
