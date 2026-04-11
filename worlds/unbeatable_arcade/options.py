@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
-from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, Visibility, ItemSet
+from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, Visibility, OptionSet
 from .misc.float_range_text import FloatRangeText
 
+from .song_list import all_songs
 
 class SkillRating(Range):
     """
@@ -125,6 +126,7 @@ class StartCharacterCount(Range):
 
     default = 1
 
+
 class StartStageCount(Range):
     """
     Sets how many stages (song backgrounds) to start with.
@@ -137,14 +139,16 @@ class StartStageCount(Range):
 
     default = 2
 
-class SongBlacklist(ItemSet):
+
+class SongBlacklist(OptionSet):
     """
     A list of songs to *not* include in the randomizer.
     Any valid song item names added here will not be randomized and will not appear in-game.
-    For example, add \"Progressive Song: bookend song\" to avoid playing the 12-minute banger.
+    For example, add \"bookend song\" to avoid playing the 12-minute banger.
     """
 
     display_name = "Song Blacklist"
+    valid_keys = [f"{song["name"]}" for song in all_songs]
 
 
 class AllowPfc(Toggle):
