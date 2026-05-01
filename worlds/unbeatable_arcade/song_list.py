@@ -19,7 +19,7 @@ base_songs = [
     {"name":"new_form", "b":4, "n":7, "h":10, "e":12, "u":17, "s":-1},
     {"name":"cop trauma", "b":3, "n":7, "h":10, "e":13, "u":17, "s":-1},
     {"name":"alternative policing strategy", "b":3, "n":7, "h":10, "e":14, "u":20, "s":-1},
-    {"name":"go figure", "b":4, "n":8, "h":10, "e":13, "u":17, "s":-1},
+    {"name":"go figure", "b":4, "n":8, "h":10, "e":13, "u":17, "s":21},
     {"name":"cosmic starter", "b":2, "n":7, "h":10, "e":13, "u":20, "s":-1},
     {"name":"dialtone", "b":2, "n":8, "h":12, "e":15, "u":19, "s":-1},
     {"name":"disco disaster", "b":4, "n":7, "h":9, "e":12, "u":17, "s":-1},
@@ -83,7 +83,8 @@ base_songs = [
     {"name":"malapropism", "b":2, "n":6, "h":9, "e":12, "u":14, "s":-1},
     {"name":"low pitch", "b":2, "n":8, "h":10, "e":13, "u":17, "s":-1},
     {"name":"mic check", "b":3, "n":7, "h":10, "e":13, "u":18, "s":-1},
-    {"name":"do no harm (atrial mix)", "b":3, "n":8, "h":11, "e":13, "u":16, "s":-1}
+    {"name":"do no harm (atrial mix)", "b":3, "n":8, "h":11, "e":13, "u":16, "s":-1},
+    {"name":"it's time to crime", "b":4, "n":8, "h":12, "e":15, "u":21, "s":-1}
 ]
 
 # All songs included with the breakout edition
@@ -94,7 +95,7 @@ breakout_songs = [
     {"name":"binary reasoning", "b":3, "n":7, "h":10, "e":14, "u":18, "s":-1},
     {"name":"dear diary", "b":2, "n":5, "h":8, "e":11, "u":14, "s":-1},
     {"name":"forward operating bass", "b":3, "n":9, "h":12, "e":15, "u":22, "s":-1},
-    {"name":"goin' crazy", "b":4, "n":8, "h":10, "e":13, "u":19, "s":-1},
+    {"name":"goin' crazy", "b":4, "n":8, "h":10, "e":13, "u":20, "s":-1},
     {"name":"hotel room 215 (feat. tenchio and postergirlxoxo)", "b":4, "n":7, "h":10, "e":12, "u":17, "s":20},
     {"name":"misery index", "b":4, "n":8, "h":12, "e":14, "u":17, "s":21},
     {"name":"square up", "b":4, "n":8, "h":11, "e":12, "u":18, "s":-1},
