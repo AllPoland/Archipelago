@@ -24,7 +24,7 @@ def get_songs_with_ratings(songs: list, options: UNBEATABLEArcadeOptions) -> dic
     skill_rating = float(options.skill_rating) / 1000
     diff_count = get_diff_count(options)
 
-    accuracy_cap = float(options.accuracy_cap) / 100
+    accuracy_cap = float(options.accuracy_cap)
     acc_curve_cutoff = float(options.acc_curve_cutoff) / 100
     acc_curve_bias = float(options.acc_curve_bias) / 100
     acc_curve_low_bias = float(options.acc_curve_low_bias) / 100
