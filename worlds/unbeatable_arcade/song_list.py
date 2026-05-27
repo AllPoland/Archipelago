@@ -84,7 +84,9 @@ base_songs = [
     {"name":"low pitch", "b":2, "n":8, "h":10, "e":13, "u":17, "s":-1},
     {"name":"mic check", "b":3, "n":7, "h":10, "e":13, "u":18, "s":-1},
     {"name":"do no harm (atrial mix)", "b":3, "n":8, "h":11, "e":13, "u":16, "s":-1},
-    {"name":"it's time to crime", "b":4, "n":8, "h":12, "e":15, "u":21, "s":-1}
+    {"name":"it's time to crime", "b":4, "n":8, "h":12, "e":15, "u":21, "s":-1},
+    {"name":"small cloud sugar candy", "b":7, "n":11, "h":12, "e":17, "u":23, "s":25},
+    {"name":"apb", "b":7, "n":10, "h":12, "e":14, "u":18, "s":-1},
 ]
 
 # All songs included with the breakout edition
