@@ -93,7 +93,7 @@ class UNBEATABLEArcadeWorld(World):
             "max_difficulty",
             "min_difficulty",
             
-            "allow_pfc",
+            "accuracy_cap",
             "acc_curve_bias",
             "acc_curve_low_bias",
             "acc_curve_cutoff"

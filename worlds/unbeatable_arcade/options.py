@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
-from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, Visibility, ItemSet
+from Options import Choice, OptionGroup, PerGameCommonOptions, Range, Toggle, Visibility, OptionSet
 from .misc.float_range_text import FloatRangeText
 
+from .song_list import all_songs
 
 class SkillRating(Range):
     """
@@ -88,6 +89,34 @@ class CompletionPercent(Range):
     default = 90
 
 
+class AccuracyCap(Range):
+    """
+    The maximum accuracy score percentage that may be required on any song.
+    This overrides the expected accuracy calculated from your skill rating for songs with expected accuracies above this cap.
+    Songs with expected accuracies below the cap will not be affected.
+    
+    Setting the cap to 100 uses the default skill rating calculations.
+    
+    It is suggested to keep this value high to avoid pacing issues.
+    
+    Note: This only affects logical accuracy requirements for progression, not the requirements to successfully pass/complete the song.
+    """
+    
+    # """The minimum value is 65, and the maximum is 100"""
+    
+    display_name = "Accuracy Score Cap"
+    
+    # range_start = 65
+    # range_end = 100
+    
+    # default = "100"
+    
+    range_start = 65
+    range_end = 100
+    
+    default = 100
+
+
 class UseBreakout(Toggle):
     """
     Includes songs from UNBEATABLE - Breakout Edition.
@@ -125,6 +154,7 @@ class StartCharacterCount(Range):
 
     default = 1
 
+
 class StartStageCount(Range):
     """
     Sets how many stages (song backgrounds) to start with.
@@ -137,25 +167,16 @@ class StartStageCount(Range):
 
     default = 2
 
-class SongBlacklist(ItemSet):
+
+class SongBlacklist(OptionSet):
     """
     A list of songs to *not* include in the randomizer.
     Any valid song item names added here will not be randomized and will not appear in-game.
-    For example, add \"Progressive Song: bookend song\" to avoid playing the 12-minute banger.
+    For example, add \"bookend song\" to avoid playing the 12-minute banger.
     """
 
     display_name = "Song Blacklist"
-
-
-class AllowPfc(Toggle):
-    """
-    When enabled, logic may expect you to get 100% accuracy on low-difficulty charts.
-    """
-
-    display_name = "Allow PFC"
-    visibility = Visibility.complex_ui
-
-    default = True
+    valid_keys = [f"{song["name"]}" for song in all_songs]
 
 
 class AccCurveBias(Range):
@@ -308,6 +329,7 @@ class CrawlTrapAmount(Range):
 @dataclass
 class UNBEATABLEArcadeOptions(PerGameCommonOptions):
     skill_rating: SkillRating
+    accuracy_cap: AccuracyCap
 
     use_breakout: UseBreakout
     max_difficulty: MaxDifficulty
@@ -326,7 +348,6 @@ class UNBEATABLEArcadeOptions(PerGameCommonOptions):
     zoom_amount: ZoomTrapAmount
     crawl_amount: CrawlTrapAmount
 
-    allow_pfc: AllowPfc
     acc_curve_bias: AccCurveBias
     acc_curve_low_bias: LowCurveBias
     acc_curve_cutoff: AccCurveCutoff
@@ -335,7 +356,7 @@ class UNBEATABLEArcadeOptions(PerGameCommonOptions):
 option_groups = [
     OptionGroup(
         "Gameplay Options",
-        [SkillRating, MaxDifficulty, MinDifficulty]
+        [SkillRating, AccuracyCap, MaxDifficulty, MinDifficulty]
     ),
     OptionGroup(
         "Generation Options",
@@ -347,6 +368,6 @@ option_groups = [
     ),
     OptionGroup(
         "Advanced Difficulty Options",
-        [AllowPfc, AccCurveBias, AccCurveCutoff]
+        [AccCurveBias, AccCurveCutoff]
     )
 ]
