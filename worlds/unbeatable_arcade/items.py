@@ -6,7 +6,7 @@ import math
 
 from BaseClasses import Item, ItemClassification
 
-from . import songs
+from . import songs, characters, stages
 from .game_info import GAME_NAME
 from .options import UNBEATABLEArcadeOptions
 from .songs import difficulty_key_from_rank
@@ -22,43 +22,6 @@ DEFAULT_CLASSIFICATIONS = {
     "Stage": ItemClassification.filler,
     "Trap": ItemClassification.trap
 }
-
-CHARACTER_NAMES = [
-    "Beat",
-    "Beat (Hoodie)",
-    "Beat (Guitar)",
-    "Beat (Nothing)",
-    "Beat (Up)",
-    "Clef",
-    "Quaver",
-    "Quaver (Acoustic)",
-    "Quaver (CQC)",
-    "Treble",
-    "Rest"
-]
-
-STAGE_NAMES = [
-    "train_station.",
-    "stadium_(past).",
-    "stadium_(present).",
-    "dreamscape.",
-    "prison_yard.",
-    "train.",
-    "lighthouse_show.",
-    "city_hideout.",
-    "recording_studio.",
-    "overpass.",
-    "city_center.",
-    "underground_show.",
-    "alleyway_show.",
-    "warehouse_show.",
-    "harm_hq_lobby.",
-    "zero_moment_array.",
-    "zm_test_chamber.",
-    "graveyard.",
-    "nsr.",
-    "greenscreen."
-]
 
 TRAP_NAMES = [
     "Silence Trap",
@@ -83,11 +46,11 @@ for song in songs.all_songs:
     ITEM_NAME_TO_ID[f"{SONG_PREFIX}{song["name"]}"] = curr_id
     curr_id += 1
 
-for char in CHARACTER_NAMES:
+for char in characters.all_characters:
     ITEM_NAME_TO_ID[f"{CHAR_PREFIX}{char}"] = curr_id
     curr_id += 1
 
-for stage in STAGE_NAMES:
+for stage in stages.all_stages:
     ITEM_NAME_TO_ID[f"{STAGE_PREFIX}{stage}"] = curr_id
     curr_id += 1
 
@@ -99,8 +62,8 @@ ITEM_NAME_TO_ID[FILLER_NAME] = curr_id
 
 ITEM_NAME_GROUPS = {
     "songs": set(f"{SONG_PREFIX}{entry["name"]}" for entry in songs.all_songs),
-    "characters": set(f"{CHAR_PREFIX}{char}" for char in CHARACTER_NAMES),
-    "stages": set(f"{STAGE_PREFIX}{stage}" for stage in STAGE_NAMES),
+    "characters": set(f"{CHAR_PREFIX}{char}" for char in characters.all_characters),
+    "stages": set(f"{STAGE_PREFIX}{stage}" for stage in stages.all_stages),
     "traps": set(TRAP_NAMES),
     "filler": {FILLER_NAME}
 }
@@ -129,8 +92,8 @@ def get_trap_count(item_count: int, trap_amount: float) -> int:
 def get_max_items():
     # There are a maximum of 6 progressive items per song
     count = len(songs.all_songs) * 6
-    count += len(CHARACTER_NAMES)
-    count += len(STAGE_NAMES)
+    count += len(characters.all_characters)
+    count += len(stages.all_stages)
 
     good_item_count = count
     for i in range(0, len(TRAP_NAMES)):
@@ -162,9 +125,9 @@ def create_item_with_classification(world: UNBEATABLEArcadeWorld, name: str) -> 
 
     if name in TRAP_NAMES:
         classification = DEFAULT_CLASSIFICATIONS["Trap"]
-    elif name in CHARACTER_NAMES:
+    elif name in characters.all_characters:
         classification = DEFAULT_CLASSIFICATIONS["Character"]
-    elif name in STAGE_NAMES:
+    elif name in stages.all_stages:
         classification = DEFAULT_CLASSIFICATIONS["Stage"]
     elif any(f"{SONG_PREFIX}{song["name"]}" == name for song in songs.all_songs):
         classification = DEFAULT_CLASSIFICATIONS["Song"]
@@ -185,8 +148,8 @@ def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
             
             item_count += 1
 
-    item_count += len(CHARACTER_NAMES)
-    item_count += len(STAGE_NAMES)
+    item_count += len(world.included_characters)
+    item_count += len(world.included_stages)
 
     # Starting items are removed from the pool
     item_count -= world.options.start_song_count
@@ -228,9 +191,9 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
     start_char_count = world.options.start_char_count
     start_char_names = []
     for i in range(0, start_char_count):
-        new_char_name = world.random.choice(CHARACTER_NAMES)
+        new_char_name = world.random.choice(world.included_characters)
         while new_char_name in start_char_names:
-            new_char_name = world.random.choice(CHARACTER_NAMES)
+            new_char_name = world.random.choice(world.included_characters)
 
         start_char_names.append(new_char_name)
 
@@ -241,9 +204,9 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
     start_stage_count = world.options.start_stage_count
     start_stage_names = []
     for i in range(0, start_stage_count):
-        new_stage_name = world.random.choice(STAGE_NAMES)
+        new_stage_name = world.random.choice(world.included_stages)
         while new_stage_name in start_stage_names:
-            new_stage_name = world.random.choice(STAGE_NAMES)
+            new_stage_name = world.random.choice(world.included_stages)
         
         start_stage_names.append(new_stage_name)
 
@@ -269,14 +232,14 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
             
             item_pool.append(world.create_item(song_item_name))
 
-    for char in CHARACTER_NAMES:
+    for char in world.included_characters:
         if char in start_char_names:
             continue
 
         char_item_name = f"{CHAR_PREFIX}{char}"
         item_pool.append(world.create_item(char_item_name))
 
-    for stage in STAGE_NAMES:
+    for stage in world.included_stages:
         if stage in start_stage_names:
             continue
 
