@@ -127,6 +127,20 @@ class UseBreakout(Toggle):
 
     default = False
 
+# replace UseBreakout when new DLC comes out
+# class UseDLC(OptionSet):
+#     """
+#     Include DLC content from the selected items.
+#     This requires that you own the selected DLCs and have them installed.
+#     Valid Options:
+#     Breakout Edition
+#     The Jamie Paige Content Companion
+#     """
+
+#     display_name = "Include DLC Content"
+
+#     valid_keys = ["Breakout Edition", "The Jamie Paige Content Companion"]
+
 
 class StartSongCount(Range):
     """

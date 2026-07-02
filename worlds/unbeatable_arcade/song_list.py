@@ -7,7 +7,7 @@ base_songs = [
     {"name":"<3", "b":3, "n":6, "h":9, "e":11, "u":15, "s":-1},
     {"name":"ball is infinite", "b":3, "n":8, "h":11, "e":13, "u":18, "s":-1},
     {"name":"bang", "b":5, "n":7, "h":10, "e":14, "u":18, "s":23},
-    {"name":"beyond the heart (broken heart mix)", "b":2, "n":3, "h":8, "e":10, "u":14, "s":-1},
+    {"name":"beyond the heart (broken heart mix)", "b":2, "n":5, "h":9, "e":12, "u":14, "s":-1},
     {"name":"blank page", "b":4, "n":9, "h":12, "e":15, "u":16, "s":19},
     {"name":"bookend song", "b":5, "n":10, "h":13, "e":17, "u":23, "s":-1},
     {"name":"bookend song -opening ver.-", "b":2, "n":5, "h":7, "e":10, "u":12, "s":-1},
@@ -69,7 +69,7 @@ base_songs = [
     {"name":"twist sound", "b":4, "n":7, "h":9, "e":14, "u":17, "s":19},
     {"name":"waiting", "b":2, "n":5, "h":8, "e":10, "u":14, "s":21},
     {"name":"waiting - lumena-tan remix", "b":1, "n":4, "h":7, "e":14, "u":19, "s":20},
-    {"name":"waiting (live)", "b":2, "n":5, "h":9, "e":10, "u":14, "s":-1},
+    {"name":"waiting (live)", "b":2, "n":5, "h":8, "e":10, "u":14, "s":-1},
     {"name":"war den", "b":5, "n":9, "h":12, "e":15, "u":19, "s":-1},
     {"name":"worn out tapes", "b":3, "n":6, "h":9, "e":13, "u":16, "s":-1},
     {"name":"worn out tapes [tally-ho! version]", "b":5, "n":7, "h":11, "e":14, "u":21, "s":25},
@@ -86,13 +86,14 @@ base_songs = [
     {"name":"do no harm (atrial mix)", "b":3, "n":8, "h":11, "e":13, "u":16, "s":-1},
     {"name":"it's time to crime", "b":4, "n":8, "h":12, "e":15, "u":21, "s":-1},
     {"name":"small cloud sugar candy", "b":7, "n":11, "h":12, "e":17, "u":23, "s":25},
-    {"name":"apb", "b":7, "n":10, "h":12, "e":14, "u":18, "s":-1},
+    {"name":"apb", "b":7, "n":10, "h":12, "e":14, "u":18, "s":23},
+    {"name":"way back when", "b":3, "n":8, "h":11, "e":14, "u":20, "s":-1}
 ]
 
 # All songs included with the breakout edition
 breakout_songs = [
     {"name":"abab kababbab", "b":2, "n":8, "h":11, "e":14, "u":20, "s":-1},
-    {"name":"afterburn", "b":1, "n":6, "h":9, "e":13, "u":17, "s":21},
+    {"name":"afterburn", "b":1, "n":6, "h":9, "e":13, "u":17, "s":20},
     {"name":"afterburner", "b":4, "n":8, "h":11, "e":16, "u":22, "s":25},
     {"name":"binary reasoning", "b":3, "n":7, "h":10, "e":14, "u":18, "s":-1},
     {"name":"dear diary", "b":2, "n":5, "h":8, "e":11, "u":14, "s":-1},

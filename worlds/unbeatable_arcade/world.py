@@ -5,7 +5,7 @@ from BaseClasses import CollectionState, Item, ItemClassification, Region
 from Options import OptionError
 from worlds.AutoWorld import World
 
-from . import songs, items, locations, rules, web_world
+from . import songs, items, locations, rules, web_world, stages, characters
 from .game_info import GAME_NAME, VERSION, COMPATIBLE_VERSIONS
 from .options import UNBEATABLEArcadeOptions
 from .ratings import ratings_logic
@@ -53,6 +53,9 @@ class UNBEATABLEArcadeWorld(World):
         self.included_songs = songs.get_included_songs(self.options)
         if len(self.included_songs) == 0:
             raise(OptionError(f"{self.game} - {self.player_name} | All songs have been blacklisted!"))
+
+        self.included_characters = characters.get_included_characters(self.options)
+        self.included_stages = stages.get_included_stages(self.options)
 
         self.item_count = items.get_item_count(self)
 
