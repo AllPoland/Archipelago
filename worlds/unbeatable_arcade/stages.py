@@ -20,7 +20,7 @@ STAGE_NAMES = [
     "zm_test_chamber.",
     "graveyard.",
     "nsr.",
-    "greenscreen."
+    "greenscreen.",
     "playback."
 ]
 
