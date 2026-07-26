@@ -104,8 +104,30 @@ breakout_songs = [
     {"name":"square up", "b":4, "n":8, "h":11, "e":12, "u":18, "s":-1},
     {"name":"welcome to slamtown", "b":2, "n":7, "h":10, "e":13, "u":19, "s":-1},
 ]
+# currently placeholder until the DLC releases
+content_companion_songs = [
+    {"name": "no eulogies", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "my universal", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "dream diary", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "turn back", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "i wish that i could fall (peak divide arrange)", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "sleeping in (jamie paige remix)", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "エビチャーハン! (quaver version)", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "newly human feeling", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "birdbrain", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "rot for clout", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "machine love", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
+    {"name": "🤼‍♀️", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1}
+]
+
+# This song is only available if you have both Breakout Edition and The Jamie Paige Content Companion
+breakout_content_songs = [
+    {"name": "square up (synthetic)", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1}
+]
 
 # All the songs in the entire game, this is used for defining IDs
 all_songs = []
 all_songs.extend(base_songs)
 all_songs.extend(breakout_songs)
+all_songs.extend(content_companion_songs)
+all_songs.extend(breakout_content_songs)
