@@ -87,7 +87,8 @@ base_songs = [
     {"name":"it's time to crime", "b":4, "n":8, "h":12, "e":15, "u":21, "s":-1},
     {"name":"small cloud sugar candy", "b":7, "n":11, "h":12, "e":17, "u":23, "s":25},
     {"name":"apb", "b":7, "n":10, "h":12, "e":14, "u":18, "s":23},
-    {"name":"way back when", "b":3, "n":8, "h":11, "e":14, "u":20, "s":-1}
+    {"name":"way back when", "b":3, "n":8, "h":11, "e":14, "u":20, "s":-1},
+    {"name":"not losing", "b":3, "n":7, "h":10, "e":13, "u":19, "s":-1}
 ]
 
 # All songs included with the breakout edition
@@ -104,25 +105,27 @@ breakout_songs = [
     {"name":"square up", "b":4, "n":8, "h":11, "e":12, "u":18, "s":-1},
     {"name":"welcome to slamtown", "b":2, "n":7, "h":10, "e":13, "u":19, "s":-1},
 ]
-# currently placeholder until the DLC releases
+
 content_companion_songs = [
-    {"name": "no eulogies", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "my universal", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "dream diary", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "turn back", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "i wish that i could fall (peak divide arrange)", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "sleeping in (jamie paige remix)", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "エビチャーハン! (quaver version)", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "newly human feeling", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "birdbrain", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "rot for clout", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "machine love", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1},
-    {"name": "🤼‍♀️", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1}
+    {"name": "no eulogies", "b":4, "n":9, "h":12, "e":16, "u":21, "s":-1},
+    {"name": "my universal", "b":2, "n":7, "h":9, "e":11, "u":16, "s":-1},
+    {"name": "dream diary", "b":2, "n":7, "h":10, "e":13, "u":18, "s":-1},
+    {"name": "turn back", "b":5, "n":8, "h":10, "e":13, "u":16, "s":19},
+    {"name": "i wish that i could fall (peak divide arrange)", "b":4, "n":9, "h":13, "e":15, "u":19, "s":24},
+    {"name": "sleeping in (jamie paige remix)", "b":4, "n":8, "h":12, "e":14, "u":19, "s":22},
+    {"name": "エビチャーハン! (quaver version)", "b":4, "n":9, "h":11, "e":14, "u":20, "s":-1},
+    {"name": "newly human feeling (feat. jamie paige)", "b":2, "n":8, "h":9, "e":11, "u":13, "s":-1},
+    {"name": "birdbrain (ft. kasane teto)", "b":3, "n":7, "h":10, "e":13, "u":17, "s":-1},
+    {"name": "rot for clout", "b":3, "n":9, "h":12, "e":16, "u":20, "s":-1},
+    {"name": "machine love", "b":3, "n":8, "h":10, "e":13, "u":15, "s":-1},
+    {"name": "women wrestling emoji", "b":5, "n":9, "h":12, "e":15, "u":18, "s":-1},
+    {"name": "nothing ever", "b":4, "n":10, "h":13, "e":16, "u":22, "s":25},
+    {"name": "little secret", "b":2, "n":6, "h":9, "e":11, "u":14, "s":-1}
 ]
 
 # This song is only available if you have both Breakout Edition and The Jamie Paige Content Companion
 breakout_content_songs = [
-    {"name": "square up (synthetic)", "b":-1, "n":-1, "h":-1, "e":-1, "u":-1, "s":-1}
+    {"name": "square up (synthetic)", "b":4, "n":8, "h":11, "e":12, "u":18, "s":-1}
 ]
 
 # All the songs in the entire game, this is used for defining IDs

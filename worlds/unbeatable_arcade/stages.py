@@ -23,10 +23,10 @@ STAGE_NAMES = [
     "greenscreen.",
     "playback."
 ]
-#Placeholder until DLC releases
+
 CONTENT_COMPANION_STAGE_NAMES = [
-    "Apple Orchard",
-    "Wrestling Arena"
+    "orchard.",
+    "squared_circle."
 ]
 
 all_stages = []
