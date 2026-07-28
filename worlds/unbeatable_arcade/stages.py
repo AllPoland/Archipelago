@@ -20,18 +20,26 @@ STAGE_NAMES = [
     "zm_test_chamber.",
     "graveyard.",
     "nsr.",
-    "greenscreen."
+    "greenscreen.",
     "playback."
+]
+
+CONTENT_COMPANION_STAGE_NAMES = [
+    "orchard.",
+    "squared_circle."
 ]
 
 all_stages = []
 all_stages.extend(STAGE_NAMES)
-
+all_stages.extend(CONTENT_COMPANION_STAGE_NAMES)
 
 def get_included_stages(options: UNBEATABLEArcadeOptions) -> list:
     included_stages = []
     included_stages.extend(STAGE_NAMES)
 
-    # DLC stuff will go here when applicable
+    # Apply DLC
+    for item_name in options.use_dlc.value:
+        if item_name == "The Jamie Paige Content Companion":
+            included_stages.extend(CONTENT_COMPANION_STAGE_NAMES)
 
     return included_stages

@@ -27,17 +27,25 @@ BREAKOUT_CHARACTER_NAMES = [
     "Sforzando"
 ]
 
+CONTENT_COMPANION_CHARACTER_NAMES = [
+    "JamieP",
+    "Quaver (Shrimp)"
+]
+
 all_characters = []
 all_characters.extend(CHARACTER_NAMES)
 all_characters.extend(BREAKOUT_CHARACTER_NAMES)
+all_characters.extend(CONTENT_COMPANION_CHARACTER_NAMES)
 
 def get_included_characters(options: UNBEATABLEArcadeOptions) -> list:
     included_characters = []
     included_characters.extend(CHARACTER_NAMES)
 
     # Apply DLC
-    if options.use_breakout:
-        # Include the breakout edition characters if the user has the DLC
-        included_characters.extend(BREAKOUT_CHARACTER_NAMES)
+    for item_name in options.use_dlc.value:
+        if item_name == "Breakout Edition":
+            included_characters.extend(BREAKOUT_CHARACTER_NAMES)
+        if item_name == "The Jamie Paige Content Companion":
+            included_characters.extend(CONTENT_COMPANION_CHARACTER_NAMES)
 
     return included_characters

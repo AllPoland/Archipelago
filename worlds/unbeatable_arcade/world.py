@@ -92,7 +92,6 @@ class UNBEATABLEArcadeWorld(World):
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         slot_data = self.options.as_dict(
-            "use_breakout",
             "max_difficulty",
             "min_difficulty",
             
@@ -101,6 +100,11 @@ class UNBEATABLEArcadeWorld(World):
             "acc_curve_low_bias",
             "acc_curve_cutoff"
         )
+
+        # DLC Handling
+        # it's a little messy, but this should keep client backwards compatibility.
+        slot_data["use_breakout"] = 1 if "Breakout Edition" in self.options.use_dlc.value else 0
+        slot_data["use_content_companion"] = 1 if "The Jamie Paige Content Companion" in self.options.use_dlc.value else 0
 
         slot_data["skill_rating"] = float(self.options.skill_rating) / 1000
 
