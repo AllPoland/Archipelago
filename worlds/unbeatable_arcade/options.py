@@ -117,29 +117,18 @@ class AccuracyCap(Range):
     default = 100
 
 
-class UseBreakout(Toggle):
+class UseDLC(OptionSet):
     """
-    Includes songs from UNBEATABLE - Breakout Edition.
-    This requires that you own the UNBEATABLE - Breakout Edition Upgrade DLC and have it installed.
+    Include DLC content from the selected items.
+    This requires that you own the selected DLCs and have them installed.
+    Valid Options:
+    Breakout Edition
+    The Jamie Paige Content Companion
     """
 
-    display_name = "Include Breakout Songs"
+    display_name = "Include DLC Content"
 
-    default = False
-
-# replace UseBreakout when new DLC comes out
-# class UseDLC(OptionSet):
-#     """
-#     Include DLC content from the selected items.
-#     This requires that you own the selected DLCs and have them installed.
-#     Valid Options:
-#     Breakout Edition
-#     The Jamie Paige Content Companion
-#     """
-
-#     display_name = "Include DLC Content"
-
-#     valid_keys = ["Breakout Edition", "The Jamie Paige Content Companion"]
+    valid_keys = ["Breakout Edition", "The Jamie Paige Content Companion"]
 
 
 class StartSongCount(Range):
@@ -345,7 +334,7 @@ class UNBEATABLEArcadeOptions(PerGameCommonOptions):
     skill_rating: SkillRating
     accuracy_cap: AccuracyCap
 
-    use_breakout: UseBreakout
+    use_dlc: UseDLC
     max_difficulty: MaxDifficulty
     min_difficulty: MinDifficulty
     completion_percent: CompletionPercent
@@ -374,7 +363,7 @@ option_groups = [
     ),
     OptionGroup(
         "Generation Options",
-        [CompletionPercent, StartSongCount, StartCharacterCount, StartStageCount, UseBreakout, SongBlacklist]
+        [CompletionPercent, StartSongCount, StartCharacterCount, StartStageCount, UseDLC, SongBlacklist]
     ),
     OptionGroup(
         "Trap Options",
