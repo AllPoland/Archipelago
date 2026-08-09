@@ -41,9 +41,6 @@ def get_included_songs(options: UNBEATABLEArcadeOptions) -> list:
         included_songs.extend(breakout_content_songs)
 
     # Apply blacklist
-    for item_name in options.song_blacklist.value:
-        # Find the first index of the song name in the list and remove it
-        remove_idx = next(i for i,s in enumerate(included_songs) if s["name"] == item_name)
-        included_songs.pop(remove_idx)
+    included_songs = list(filter(lambda song: song["name"] not in options.song_blacklist.value, included_songs))
 
     return included_songs
