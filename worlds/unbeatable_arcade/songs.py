@@ -29,13 +29,13 @@ def get_included_songs(options: UNBEATABLEArcadeOptions) -> list:
     content_companion=False
 
     # Apply DLC
-    for item_name in options.use_dlc.value:
-        if item_name == "Breakout Edition":
-            included_songs.extend(breakout_songs)
-            breakout=True
-        if item_name == "The Jamie Paige Content Companion":
-            included_songs.extend(content_companion_songs)
-            content_companion=True
+    if "Breakout Edition" in options.use_dlc.value:
+        included_songs.extend(breakout_songs)
+        breakout=True
+
+    if "The Jamie Paige Content Companion" in options.use_dlc.value:
+        included_songs.extend(content_companion_songs)
+        content_companion=True
     
     if(breakout and content_companion):
         included_songs.extend(breakout_content_songs)
