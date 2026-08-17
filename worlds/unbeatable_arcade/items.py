@@ -170,49 +170,32 @@ def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
 def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
     # Grant the player's starting songs
     start_song_count = world.options.start_song_count
-    start_song_names = []
     # Only songs with a valid first difficulty can be start songs, otherwise
     # get_item_count's assumption (each start song removes 1 valid item) breaks
     first_diff_key = difficulty_key_from_rank(world.options.min_difficulty)
     valid_start_songs = [s for s in world.included_songs if s[first_diff_key] >= 0]
-    for i in range(0, start_song_count):
-        new_song_name = world.random.choice(valid_start_songs)["name"]
-        while new_song_name in start_song_names:
-            # In case we roll the same song twice, just roll again
-            new_song_name = world.random.choice(valid_start_songs)["name"]
 
-        start_song_names.append(new_song_name)
+    if len(valid_start_songs) < start_song_count:
+        print(f"{world.game} - {world.player_name} | Start song count higher than the number of valid start songs, limiting to {len(valid_start_songs)} starting songs.")
+        start_song_count = len(valid_start_songs)
 
-        song_item_name = f"{SONG_PREFIX}{new_song_name}"
-        new_song = world.create_item(song_item_name)
-        world.push_precollected(new_song)
+    start_songs = world.random.sample(valid_start_songs, start_song_count)
+    start_song_names = [song["name"] for song in start_songs]
+    for song_name in start_song_names:
+        song_item = world.create_item(f"{SONG_PREFIX}{song_name}")
+        world.push_precollected(song_item)
 
     # Grant the player's starting characters
-    start_char_count = world.options.start_char_count
-    start_char_names = []
-    for i in range(0, start_char_count):
-        new_char_name = world.random.choice(world.included_characters)
-        while new_char_name in start_char_names:
-            new_char_name = world.random.choice(world.included_characters)
+    start_char_names = world.random.sample(world.included_characters, world.options.start_char_count)
+    for char_name in start_char_names:
+        char_item = world.create_item(f"{CHAR_PREFIX}{char_name}")
+        world.push_precollected(char_item)
 
-        start_char_names.append(new_char_name)
-
-        char_item_name = f"{CHAR_PREFIX}{new_char_name}"
-        new_char = world.create_item(char_item_name)
-        world.push_precollected(new_char)
-
-    start_stage_count = world.options.start_stage_count
-    start_stage_names = []
-    for i in range(0, start_stage_count):
-        new_stage_name = world.random.choice(world.included_stages)
-        while new_stage_name in start_stage_names:
-            new_stage_name = world.random.choice(world.included_stages)
-        
-        start_stage_names.append(new_stage_name)
-
-        stage_item_name = f"{STAGE_PREFIX}{new_stage_name}"
-        new_stage = world.create_item(stage_item_name)
-        world.push_precollected(new_stage)
+    # Grant the player's starting stages
+    start_stage_names = world.random.sample(world.included_stages, world.options.start_stage_count)
+    for stage_name in start_stage_names:
+        stage_item = world.create_item(f"{STAGE_PREFIX}{stage_name}")
+        world.push_precollected(stage_item)
 
     item_pool: list[Item] = []
 

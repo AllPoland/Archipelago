@@ -29,21 +29,18 @@ def get_included_songs(options: UNBEATABLEArcadeOptions) -> list:
     content_companion=False
 
     # Apply DLC
-    for item_name in options.use_dlc.value:
-        if item_name == "Breakout Edition":
-            included_songs.extend(breakout_songs)
-            breakout=True
-        if item_name == "The Jamie Paige Content Companion":
-            included_songs.extend(content_companion_songs)
-            content_companion=True
+    if "Breakout Edition" in options.use_dlc.value:
+        included_songs.extend(breakout_songs)
+        breakout=True
+
+    if "The Jamie Paige Content Companion" in options.use_dlc.value:
+        included_songs.extend(content_companion_songs)
+        content_companion=True
     
     if(breakout and content_companion):
         included_songs.extend(breakout_content_songs)
 
     # Apply blacklist
-    for item_name in options.song_blacklist.value:
-        # Find the first index of the song name in the list and remove it
-        remove_idx = next(i for i,s in enumerate(included_songs) if s["name"] == item_name)
-        included_songs.pop(remove_idx)
+    included_songs = list(filter(lambda song: song["name"] not in options.song_blacklist.value, included_songs))
 
     return included_songs
