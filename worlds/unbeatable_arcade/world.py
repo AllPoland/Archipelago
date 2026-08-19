@@ -9,6 +9,7 @@ from . import songs, items, locations, rules, web_world, stages, characters
 from .game_info import GAME_NAME, VERSION, COMPATIBLE_VERSIONS
 from .options import UNBEATABLEArcadeOptions
 from .ratings import ratings_logic
+from .songs import difficulty_key_from_rank
 
 class UNBEATABLEArcadeWorld(World):
     """
@@ -33,7 +34,9 @@ class UNBEATABLEArcadeWorld(World):
     included_songs: list
     item_count: int
     rated_songs: dict[str, dict[int, float]]
+    start_song_count: int
     target_rating: float
+    valid_start_songs: list
 
 
     def generate_early(self) -> None:
@@ -53,6 +56,17 @@ class UNBEATABLEArcadeWorld(World):
         self.included_songs = songs.get_included_songs(self.options)
         if len(self.included_songs) == 0:
             raise(OptionError(f"{self.game} - {self.player_name} | All songs have been blacklisted!"))
+
+        # Check that there are enough starting songs. Needs to be done here to get the right number of items
+        # Only songs with a valid first difficulty can be start songs, otherwise
+        # get_item_count's assumption (each start song removes 1 valid item) breaks
+        self.start_song_count = self.options.start_song_count
+        first_diff_key = difficulty_key_from_rank(self.options.min_difficulty)
+        self.valid_start_songs = [s for s in self.included_songs if s[first_diff_key] >= 0]
+
+        if len(self.valid_start_songs) < self.start_song_count:
+            print(f"{self.game} - {self.player_name} | Start song count higher than the number of valid start songs, limiting to {len(self.valid_start_songs)} starting songs.")
+            self.start_song_count = len(self.valid_start_songs)
 
         self.included_characters = characters.get_included_characters(self.options)
         self.included_stages = stages.get_included_stages(self.options)
