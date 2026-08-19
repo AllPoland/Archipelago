@@ -152,7 +152,7 @@ def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
     item_count += len(world.included_stages)
 
     # Starting items are removed from the pool
-    item_count -= world.options.start_song_count
+    item_count -= world.start_song_count
     item_count -= world.options.start_char_count
     item_count -= world.options.start_stage_count
 
@@ -169,17 +169,7 @@ def get_item_count(world: UNBEATABLEArcadeWorld) -> int:
 
 def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
     # Grant the player's starting songs
-    start_song_count = world.options.start_song_count
-    # Only songs with a valid first difficulty can be start songs, otherwise
-    # get_item_count's assumption (each start song removes 1 valid item) breaks
-    first_diff_key = difficulty_key_from_rank(world.options.min_difficulty)
-    valid_start_songs = [s for s in world.included_songs if s[first_diff_key] >= 0]
-
-    if len(valid_start_songs) < start_song_count:
-        print(f"{world.game} - {world.player_name} | Start song count higher than the number of valid start songs, limiting to {len(valid_start_songs)} starting songs.")
-        start_song_count = len(valid_start_songs)
-
-    start_songs = world.random.sample(valid_start_songs, start_song_count)
+    start_songs = world.random.sample(world.valid_start_songs, world.start_song_count)
     start_song_names = [song["name"] for song in start_songs]
     for song_name in start_song_names:
         song_item = world.create_item(f"{SONG_PREFIX}{song_name}")
