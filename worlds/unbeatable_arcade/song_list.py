@@ -88,7 +88,11 @@ base_songs = [
     {"name":"small cloud sugar candy", "b":7, "n":11, "h":12, "e":17, "u":23, "s":25},
     {"name":"apb", "b":7, "n":10, "h":12, "e":14, "u":18, "s":23},
     {"name":"way back when", "b":3, "n":8, "h":11, "e":14, "u":20, "s":-1},
-    {"name":"not losing", "b":3, "n":7, "h":10, "e":13, "u":19, "s":-1}
+    {"name":"not losing", "b":3, "n":7, "h":10, "e":13, "u":19, "s":-1},
+    {"name":"cryogenic", "b":5, "n":9, "h":12, "e":15, "u":20, "s":-1},
+    {"name":"moon child (unbeatable's loveadelic rpg adventure remix)", "b":3, "n":10, "h":12, "e":14, "u":20, "s":23},
+    {"name":"moon child (amiga mix)", "b":1, "n":5, "h":9, "e":13, "u":19, "s":21},
+    {"name":"moon child (windows mix)", "b":3, "n":8, "h":11, "e":13, "u":18, "s":-1}
 ]
 
 # All songs included with the breakout edition
