@@ -27,7 +27,7 @@ base_songs = [
     {"name":"done in love (full version)", "b":1, "n":5, "h":8, "e":11, "u":19, "s":20},
     {"name":"drastic hammer", "b":3, "n":6, "h":9, "e":11, "u":13, "s":-1},
     {"name":"eating is living", "b":4, "n":6, "h":8, "e":11, "u":14, "s":22},
-    {"name":"empty diary", "b":1, "n":4, "h":8, "e":10, "u":14, "s":-1},
+    {"name":"empty diary", "b":1, "n":4, "h":8, "e":10, "u":14, "s":18},
     {"name":"empty diary - (soundcirclet rmx)", "b":4, "n":5, "h":10, "e":11, "u":16, "s":21},
     {"name":"familiar", "b":3, "n":4, "h":7, "e":11, "u":12, "s":-1},
     {"name":"familiar (acoustic)", "b":4, "n":6, "h":8, "e":10, "u":13, "s":-1},
@@ -92,7 +92,11 @@ base_songs = [
     {"name":"cryogenic", "b":5, "n":9, "h":12, "e":15, "u":20, "s":-1},
     {"name":"moon child (unbeatable's loveadelic rpg adventure remix)", "b":3, "n":10, "h":12, "e":14, "u":20, "s":23},
     {"name":"moon child (amiga mix)", "b":1, "n":5, "h":9, "e":13, "u":19, "s":21},
-    {"name":"moon child (windows mix)", "b":3, "n":8, "h":11, "e":13, "u":18, "s":-1}
+    {"name":"moon child (windows mix)", "b":3, "n":8, "h":11, "e":13, "u":18, "s":-1},
+    {"name":"excited delirium", "b":3, "n":7, "h":10, "e":13, "u":19, "s":-1},
+    {"name":"shut up until i'm done", "b":2, "n":5, "h":8, "e":10, "u":13, "s":18},
+    {"name":"show me", "b":5, "n":9, "h":12, "e":14, "u":20, "s":-1},
+    {"name":"it may be greenish ~that future of ours~", "b":3, "n":9, "h":12, "e":15, "u":23, "s":25}
 ]
 
 # All songs included with the breakout edition
